@@ -82,6 +82,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.camera.imglib.fddsp=1 \
     persist.camera.llc=1 \
     persist.camera.llnoise=1 \
+    persist.vendor.qti.telephony.vt_cam_interface=1	
 
 # Charger
 ro.enable_boot_charger_mode=1 
