@@ -135,6 +135,9 @@ on enable-low-power
     write /dev/cpuset/system-background/cpus 0-2
 
 on charger
+    wait /dev/block/platform/soc/${ro.boot.bootdevice}
+    symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
+    mount ext4 /dev/block/bootdevice/by-name/system /system ro barrier=1
     write /sys/devices/system/cpu/cpu1/online 0
     write /sys/devices/system/cpu/cpu2/online 0
     write /sys/devices/system/cpu/cpu3/online 0
@@ -145,6 +148,12 @@ on charger
     write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 1
     write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 1
     write /sys/module/lpm_levels/parameters/sleep_disabled 0
+
+service charger /charger
+    class charger
+    group log system graphics
+    writepid /dev/cpuset/system-background/tasks
+#seclabel u:r:charger:s0
 
 on property:init.svc.recovery=running
     trigger enable-low-power
