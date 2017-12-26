@@ -49,5 +49,8 @@ LOCAL_SHARED_LIBRARIES := \
     android.hardware.power@1.0
 
 
+LOCAL_HEADER_LIBRARIES := \
+    libhardware_headers
+
 include $(BUILD_EXECUTABLE)
 endif
