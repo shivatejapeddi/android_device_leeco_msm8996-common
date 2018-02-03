@@ -145,6 +145,8 @@ BOARD_ROOT_EXTRA_SYMLINKS := \
     /vendor/firmware_mnt:/firmware \
     /vendor/bt_firmware:/bt_firmware
 
+PRODUCT_SHIPPING_API_LEVEL := 23
+
 #Enable DRM plugins 64 bit compilation
 TARGET_ENABLE_MEDIADRM_64 := true
 
@@ -196,10 +198,6 @@ TARGET_NO_RPC := true
 DEVICE_FRAMEWORK_MANIFEST_FILE := $(PLATFORM_PATH)/framework_manifest.xml
 DEVICE_MANIFEST_FILE := $(PLATFORM_PATH)/manifest.xml
 DEVICE_MATRIX_FILE := $(PLATFORM_PATH)/compatibility_matrix.xml
-
-# Init
-TARGET_INIT_VENDOR_LIB := libinit_leeco_msm8996
-TARGET_RECOVERY_DEVICE_MODULES := libinit_leeco_msm8996
 
 # Sensors
 USE_SENSOR_MULTI_HAL := true
