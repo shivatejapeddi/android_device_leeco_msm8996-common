@@ -869,7 +869,7 @@ service vendor.dataqti /vendor/bin/qti
     disabled
     writepid /dev/cpuset/system-background/tasks
 
-service sensors /vendor/bin/sensors.qcom
+service vendor.sensors /vendor/bin/sensors.qcom
     class core
     user root
     group root
