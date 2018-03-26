@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <public type="drawable" name="ic_settings_lepref" id="0x7f020000" />
+    <public type="xml" name="le_settings" id="0x7f030000" />
+    <public type="string" name="lepref_title" id="0x7f050000" />
+    <public type="string" name="battery_settings_title" id="0x7f050001" />
+    <public type="string" name="qc_title" id="0x7f050002" />
+    <public type="string" name="qc_summary" id="0x7f050003" />
+</resources>
