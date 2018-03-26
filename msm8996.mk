@@ -259,6 +259,10 @@ PRODUCT_PACKAGES += \
     ebtables \
     ethertypes
 
+# LePref settigs modules
+PRODUCT_PACKAGES += \
+    LePref
+
 # Keymaster
 PRODUCT_PACKAGES += \
     android.hardware.keymaster@3.0-impl
