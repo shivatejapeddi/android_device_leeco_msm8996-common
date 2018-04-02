@@ -323,6 +323,12 @@
     <string name="config_ims_package">org.codeaurora.ims</string>
     <bool name="config_dynamic_bind_ims">true</bool>
 
+    <!-- Whether the always on display mode is available. -->
+    <bool name="config_dozeAlwaysOnDisplayAvailable">true</bool>
+
+    <!-- Whether the display blanks itself when transition from a doze to a non-doze state -->
+    <bool name="config_displayBlanksAfterDoze">true</bool>
+
     <!-- Enable adjusting the button backlight -->
     <!-- Should the pinner service pin the Camera application? -->
     <bool name="config_pinnerCameraApp">true</bool>
@@ -376,8 +382,5 @@
 
     <!-- Button brightness -->
     <bool name="config_button_brightness_support">true</bool>
-	
-	<!-- Device specific doze package -->
-    <string name="config_customDozePackage">org.lineageos.settings.doze/org.lineageos.settings.doze.DozeSettingsActivity</string>
 	
 </resources>
