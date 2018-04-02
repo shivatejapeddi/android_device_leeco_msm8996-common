@@ -15,7 +15,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     mmp.enable.3g2=true \
     mm.enable.smoothstreaming=true \
     mm.enable.qcom_parser=4194303 \
-    persist.mm.enable.prefetch=true
+    persist.mm.enable.prefetch=true \
+    persist.media.treble_omx=false
 
 # Enable AAC 5.1 output
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -63,7 +64,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     bt.max.hfpclient.connections=1 \
     qcom.bluetooth.soc=rome \
     ro.bluetooth.wipower=true \
-    ro.bluetooth.emb_wp_mode=true
+    ro.bluetooth.emb_wp_mode=true \
+    persist.bt.enableAptXHD=true 
 
 # System property for cabl
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -80,7 +82,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.camera.HAL3.enabled=1 \
     persist.camera.imglib.fddsp=1 \
     persist.camera.llc=1 \
-    persist.camera.llnoise=1 \
+    vidc.enc.disable.pq=true \
+    persist.camera.llnoise=1
 
 # Charger
 ro.enable_boot_charger_mode=1 
