@@ -24,4 +24,9 @@
        3 = right side
   -->
   <integer name="config_fingerprintSensorLocation">0</integer>
+
+  <!-- does the device have multi color led support or only
+       a fixed set of led colors -->
+  <bool name="config_has_multi_color_led">false</bool>
+
 </resources>
