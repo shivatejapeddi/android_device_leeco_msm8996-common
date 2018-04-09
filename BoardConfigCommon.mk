@@ -204,11 +204,9 @@ DEVICE_MATRIX_FILE := $(PLATFORM_PATH)/compatibility_matrix.xml
 # Keystore
 TARGET_PROVIDES_KEYMASTER := true
 
-# Lights
-TARGET_PROVIDES_LIBLIGHT := true
-
 # RIL
 TARGET_RIL_VARIANT := caf
+
 
 # Sensors
 USE_SENSOR_MULTI_HAL := true
