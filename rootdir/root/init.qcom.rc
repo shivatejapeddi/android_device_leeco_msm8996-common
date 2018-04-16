@@ -814,14 +814,14 @@ on property:persist.env.fastdorm.enabled=true
 
 service cnd /vendor/bin/cnd
     class main
-    socket cnd stream 660 root inet
-    group root
+    user system
+    group system wifi inet radio wakelock net_admin
     writepid /dev/cpuset/system-background/tasks
 
-service dpmQmiMgr /system/vendor/bin/dpmQmiMgr
+service dpmQmiMgr /vendor/bin/dpmQmiMgr
     class main
     user system
-    group system
+    group radio system
 
 service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
     class core
@@ -831,11 +831,13 @@ service irsc_util /vendor/bin/irsc_util "/vendor/etc/sec_config"
 service rmt_storage /vendor/bin/rmt_storage
     class core
     user root
-    group root system wakelock
+    group system wakelock
+    shutdown critical
+    ioprio rt 0
     writepid /dev/cpuset/system-background/tasks
 
 service tftp_server /vendor/bin/tftp_server
-    class main
+    class core
     user root
     writepid /dev/cpuset/system-background/tasks
 
@@ -845,11 +847,10 @@ on property:wc_transport.start_hci=true
 on property:wc_transport.start_hci=false
     stop start_hci_filter
 
-service start_hci_filter /system/vendor/bin/wcnss_filter
+service start_hci_filter /vendor/bin/wcnss_filter
     class late_start
     user bluetooth
-    group bluetooth diag system wakelock
-    seclabel u:r:wcnss_filter:s0
+    group bluetooth oem_2950
     disabled
 
 service config_bt_addr /system/vendor/bin/btnvtool -O
@@ -879,7 +880,7 @@ service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
     disabled
     oneshot
 
-service netmgrd /system/vendor/bin/netmgrd
+service netmgrd /vendor/bin/netmgrd
     class main
     user root
     group root wifi wakelock radio inet
@@ -893,23 +894,26 @@ service ipacm-diag /system/vendor/bin/ipacm-diag
     group radio diag oem_2901
     disabled
 
-service ipacm /system/vendor/bin/ipacm
+service ipacm /vendor/bin/ipacm
     class main
     user radio
     group radio inet
-    disabled
+    writepid /dev/cpuset/system-background/tasks
 
-service qti /system/vendor/bin/qti
+service qti /vendor/bin/qti
     class main
     user radio
     group radio oem_2901 diag usb net_admin
     disabled
     writepid /dev/cpuset/system-background/tasks
 
-service sensors /system/vendor/bin/sensors.qcom
+service sensors /vendor/bin/sensors.qcom
     class core
-    user root
-    group root
+    user system
+    group system
+    # Grants the ability for this daemon to bind IPC router ports so it can
+    # register QMI services
+    capabilities NET_BIND_SERVICE
     writepid /dev/cpuset/system-background/tasks
 
 on property:ro.use_data_netmgrd=false
