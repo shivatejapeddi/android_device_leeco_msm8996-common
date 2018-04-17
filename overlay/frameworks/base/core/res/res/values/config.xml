@@ -443,11 +443,16 @@
     <bool name="config_multiColorBatteryLed">true</bool>
 
     <!-- Does the notification LED support multiple colors?
+         Used to decide if the user can change the colors -->
+    <bool name="config_multiColorNotificationLed">true</bool>
+
+    <!-- Enable adjusting the button backlight -->
+    <bool name="config_deviceHasVariableButtonBrightness">true</bool>
+
+    <!-- Does the notification LED support multiple colors?
          Used to decide if the user can change the colors 
     <bool name="config_multiColorNotificationLed">true</bool-->
 
-    <!-- Enable full screen DT2S in lockscreen -->
-    <bool name="fullScreenDT2S">true</bool>
 
     <!-- Whether notify fingerprint client of successful cancelled authentication -->
     <bool name="config_notifyClientOnFingerprintCancelSuccess">true</bool>
@@ -457,9 +462,6 @@
 
     <!-- Whether the display blanks itself when transition from a doze to a non-doze state -->
     <bool name="config_displayBlanksAfterDoze">true</bool>
-
-    <!-- Multicolor Led Support -->
-    <bool name="config_multicolorled">true</bool>
 
     <!-- Control the behavior when the user triple presses the power button.
             0 - Nothing
@@ -492,8 +494,5 @@
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
     <integer name="config_deviceHardwareKeys">83</integer>
-
-     <!-- Button Backlight -->
-     <bool name="config_button_brightness_support">true</bool>
 
 </resources>
