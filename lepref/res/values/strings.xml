@@ -14,6 +14,22 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="lepref_title">Leeco Extras</string>
+	
+    <!-- Category title -->
+    <string name="graphics_title">Graphics</string>
+
+    <!-- Kcal -->
+    <string name="kcal_title">Display color</string>
+    <string name="kcal_summary">Display color calibration using KCAL</string>
+    <string name="kcal_enabled_title">Enable KCAL</string>
+    <string name="kcal_enabled_summary">Turn on display calibration using KCAL</string>
+    <string name="kcal_red">Red</string>
+    <string name="kcal_green">Green</string>
+    <string name="kcal_blue">Blue</string>
+    <string name="kcal_saturation">Saturation</string>
+    <string name="kcal_contrast">Constrast</string>
+    <string name="menu_reset">Reset</string>
+    <string name="kcal_color_temp">Color temperature (K)</string>	
 
     <!-- Battery -->
     <string name="battery_settings_title">Battery</string>

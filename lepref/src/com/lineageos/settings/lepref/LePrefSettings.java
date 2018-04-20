@@ -13,12 +13,15 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceScreen;
 import android.preference.SwitchPreference;
+import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceScreen;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +39,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 	private static final String ENABLE_FOCUS_FIX = "focusfix_setting";
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
 	private static final String FOCUSFIX_SYSTEM_PROPERTY = "persist.camera.focus_fix";
-
+        private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mEnableFocusFix;
 
@@ -47,6 +50,15 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.le_settings);
+        mKcalPref = findPreference("kcal");
+                mKcalPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                     @Override
+                     public boolean onPreferenceClick(Preference preference) {
+                         Intent intent = new Intent(getApplicationContext(), DisplayCalibration.class);
+                         startActivity(intent);
+                         return true;
+                     }
+                });
         mContext = getApplicationContext();
 
         mEnableQC = (SwitchPreference) findPreference(ENABLE_QC_KEY);
