@@ -21,4 +21,15 @@
       android:summary="@string/focusf_summary" />
 
 </PreferenceCategory>
+
+    <PreferenceCategory
+            android:title="@string/graphics_title">
+
+        <PreferenceScreen
+                android:key="kcal"
+                android:fragment="DisplayCalibration"
+                android:summary="@string/kcal_summary"
+                android:title="@string/kcal_title" />
+
+    </PreferenceCategory>
 </PreferenceScreen>

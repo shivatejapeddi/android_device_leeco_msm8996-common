@@ -30,6 +30,19 @@
                 android:name="com.android.settings.icon"
                 android:resource="@drawable/ic_settings_lepref" />
         </activity>
-
+        <activity
+            android:name=".DisplayCalibration"
+            android:label="@string/kcal_title"
+            android:theme="@android:style/Theme.DeviceDefault.Settings">			
+            <intent-filter>
+                <action android:name="com.android.settings.action.EXTRA_SETTINGS" />
+            </intent-filter>
+            <meta-data
+                android:name="com.android.settings.category"
+                android:value="com.android.settings.category.device" />
+            <meta-data
+                android:name="com.android.settings.icon"
+                android:resource="@drawable/ic_settings_lepref" />			
+        </activity>
     </application>
 </manifest>
