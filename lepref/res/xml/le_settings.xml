@@ -27,7 +27,7 @@
 
         <PreferenceScreen
                 android:key="kcal"
-                android:fragment="DisplayCalibration"
+                android:fragment="com.lineageos.settings.lepref.DisplayCalibration"
                 android:summary="@string/kcal_summary"
                 android:title="@string/kcal_title" />
 
