@@ -1,4 +1,4 @@
-service dumpstate-1-0 /vendor/bin/hw/android.hardware.dumpstate@1.0-service.marlin
+service dumpstate-1-0 /vendor/bin/hw/android.hardware.dumpstate@1.0-service.x2
     class hal
     user system
     group system
