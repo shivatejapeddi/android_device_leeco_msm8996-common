@@ -315,7 +315,7 @@ PRODUCT_PACKAGES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.1-service.x2
+    android.hardware.power@1.0-service.x2
 
 # Dumpstate HAL
 PRODUCT_PACKAGES += \
