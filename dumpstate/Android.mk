@@ -16,8 +16,8 @@
 
 LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
-LOCAL_MODULE := android.hardware.dumpstate@1.0-service.gemini
-LOCAL_INIT_RC := android.hardware.dumpstate@1.0-service.gemini.rc
+LOCAL_MODULE := android.hardware.dumpstate@1.0-service.x2
+LOCAL_INIT_RC := android.hardware.dumpstate@1.0-service.x2.rc
 LOCAL_MODULE_RELATIVE_PATH := hw
 
 LOCAL_SRC_FILES := \
