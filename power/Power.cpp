@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#define LOG_TAG "android.hardware.power@1.1-service.marlin"
+#define LOG_TAG "android.hardware.power@1.1-service.x2"
 
 #include <android/log.h>
 #include <utils/Log.h>
