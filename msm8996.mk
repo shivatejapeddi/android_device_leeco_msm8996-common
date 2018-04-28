@@ -49,6 +49,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,device/leeco/msm8996-common/rootdir/root,root)
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/root/init.power.sh:system/vendor/bin/init.power.sh
+    $(LOCAL_PATH)/rootdir/root/init.foreground.sh:system/vendor/bin/init.foreground.sh
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:system/etc/permissions/android.hardware.audio.low_latency.xml \

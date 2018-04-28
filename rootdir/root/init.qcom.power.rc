@@ -25,145 +25,6 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-on init
-    # Disable UFS powersaving
-    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 0
-    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 0
-    write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 0
-    write /sys/module/lpm_levels/parameters/sleep_disabled "Y"
-
-on boot
-    # Bring up CPUs
-    trigger init-cpus
-
-    # Update cpusets now that CPUs are up
-   write /dev/cpuset/top-app/cpus 0-3
-    write /dev/cpuset/foreground/boost/cpus 0-2
-    write /dev/cpuset/foreground/cpus 0-2
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-2
-
-    # Add a cpuset for the camera daemon (we want all cores for camera)
-    mkdir /dev/cpuset/camera-daemon
-    write /dev/cpuset/camera-daemon/cpus 0-3
-    write /dev/cpuset/camera-daemon/mems 0
-    chown system system /dev/cpuset/camera-daemon
-    chown system system /dev/cpuset/camera-daemon/tasks
-    chmod 0664 /dev/cpuset/camera-daemon/tasks
-
-    # bring back main cores CPU 0,2
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
-    # EAS: Capping the max frequency of silver core to 1.6GHz
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1593600
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
-
-    # if EAS is present, switch to sched governor (no effect if not EAS)
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
-
-    # Re-enable thermal hotplug
-    write /sys/module/msm_thermal/core_control/enabled 1
-    write /sys/module/msm_thermal/parameters/enabled Y
-
-    # Enable sched boost
-    write /proc/sys/kernel/sched_boost 1
-
-on enable-low-power
-
-     # Disable thermal hotplug to switch governor
-    write /sys/module/msm_thermal/core_control/enabled 0
-
-    # Set sync wakee policy tunable
-    write /proc/sys/kernel/sched_prefer_sync_wakee_to_waker 1
-
-    # Enable Adaptive LMK
-    # write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
-    write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 81250
-
-    # Set big.LITTLE scheduler parameters
-    write /proc/sys/kernel/sched_boost 0
-    write /proc/sys/kernel/sched_upmigrate 90
-    write /proc/sys/kernel/sched_downmigrate 85
-    write /proc/sys/kernel/sched_freq_inc_notify 400000
-    write /proc/sys/kernel/sched_freq_dec_notify 400000
-    write /proc/sys/kernel/sched_rt_runtime_us 1000000
-    write /proc/sys/kernel/sched_rt_period_us 1000000
-
-    # Enable bus-dcvs
-    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
-    write /sys/class/devfreq/soc:qcom,cpubw/polling_interval 50
-    write /sys/class/devfreq/soc:qcom,cpubw/min_freq 1525
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/mbps_zones "1525 5195 11863 13763"
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/sample_ms 4
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/io_percent 34
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory 20
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_length 10
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_ceil_mbps 0
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_io_percent 34
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_delay 20
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/guard_band_mbps 0
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/up_scale 250
-    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/idle_mbps 1600
-
-    write /sys/module/lpm_levels/parameters/sleep_disabled 0
-
-    # Enable UFS powersaving
-    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 1
-    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 1
-    write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 1
-
-    # Set idle GPU to 133 MHz
-    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
-    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
-    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
-    write /sys/class/kgsl/kgsl-3d0/devfreq/min_clock_mhz 133
-    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 133000000
-    write /sys/class/kgsl/kgsl-3d0/devfreq/max_clock_mhz 624
-    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000
-
-    write /sys/module/workqueue/parameters/power_efficient Y
-
-    # update cpusets now that boot is complete and we want better load balancing
-    write /dev/cpuset/top-app/cpus 0-3
-    write /dev/cpuset/foreground/boost/cpus 0-2
-    write /dev/cpuset/foreground/cpus 0-2
-    write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-2
-
-    # Set swappiness and cache pressure
-    write /proc/sys/vm/swappiness 5
-    write /proc/sys/vm/vfs_cache_pressure 10
-    
-
-    write /sys/block/dm-0/queue/read_ahead_kb 256
-    write /sys/block/sda/queue/read_ahead_kb 256
-    write /sys/block/sde/queue/read_ahead_kb 256
-    write /sys/block/dm-0/queue/scheduler cfq
-    write /sys/block/sda/queue/scheduler cfq
-    write /sys/block/sde/queue/scheduler cfq
-
-    #Enable scsi block multiqueue
-    write /sys/module/scsi_mod/parameters/use_blk_mq N
-
-    write /sys/module/msm_thermal/core_control/enabled 0
-
-    # Set nice Level to 9
-    write /proc/sys/kernel/sched_upmigrate_min_nice 9
-
-    # Set perfd properties
-    setprop sys.post_boot.parsed 1
-
-on property:sys.boot_completed=1
-    trigger enable-low-power
-
-    # Set I/O squeduler
-    setprop sys.io.scheduler "cfq"
-
-on property:init.svc.recovery=running
-    trigger enable-low-power
-
 on charger
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     # Enable UFS powersaving
@@ -183,19 +44,6 @@ on charger
     start hvdcp_opti
     start thermal-engine
 
-
-    # UFS health
-    chmod 755 /sys/kernel/debug/ufshcd0
-    chown 644 /sys/kernel/debug/ufshcd0/err_state
-    chmod 644 /sys/kernel/debug/ufshcd0/power_mode
-    chmod 644 /sys/kernel/debug/ufshcd0/host_regs
-    chmod 644 /sys/kernel/debug/ufshcd0/show_hba
-    chmod 644 /sys/kernel/debug/ufshcd0/dump_device_desc
-    chmod 755 /sys/kernel/debug/ufshcd0/stats
-    chmod 644 /sys/kernel/debug/ufshcd0/stats/req_stats
-    chmod 644 /sys/kernel/debug/ufshcd0/stats/query_stats
-    chmod 644 /sys/kernel/debug/ufshcd0/stats/err_stats
-
 service charger /charger
     class charger
     group log system graphics
@@ -211,7 +59,195 @@ on property:dev.bootcomplete=1
     write /dev/cpuset/foreground/cpus 0-2
     write /dev/cpuset/background/cpus 0
     write /dev/cpuset/system-background/cpus 0-2
+
+on early-init
+    mount debugfs debugfs /sys/kernel/debug
+    chmod 0755 /sys/kernel/debug
+
+on init
+    # Disable UFS powersaving
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 0
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 0
+    write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 0
+    write /sys/module/lpm_levels/parameters/sleep_disabled "Y"
+
+on boot
+    # from init.power.sh
+    # disable thermal hotplug to switch governor
+    write /sys/module/msm_thermal/core_control/enabled 0
+
+    # bring back main cores CPU 0,2
+    write /sys/devices/system/cpu/cpu0/online 1
+    write /sys/devices/system/cpu/cpu2/online 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 300000
+
+    # EAS: Capping the max frequency of silver core to 1.6GHz
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1593600
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 300000
+
+    # if EAS is present, switch to sched governor (no effect if not EAS)
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
+    # re-enable thermal hotplug
+    write /sys/module/msm_thermal/core_control/enabled 1
+
+    # Set big.LITTLE scheduler parameters
+    write /proc/sys/kernel/sched_boost 0
+    write /proc/sys/kernel/sched_upmigrate 90
+    write /proc/sys/kernel/sched_downmigrate 85
+    write /proc/sys/kernel/sched_freq_inc_notify 400000
+    write /proc/sys/kernel/sched_freq_dec_notify 400000
+    write /proc/sys/kernel/sched_rt_runtime_us 1000000
+    write /proc/sys/kernel/sched_rt_period_us 1000000
+
+   
+    # Exec init.foreground.sh in background
+    start foreground_sh
+    # Add a cpuset for the camera daemon (we want all cores for camera)
+    mkdir /dev/cpuset/camera-daemon
+    write /dev/cpuset/camera-daemon/cpus 0-3
+    write /dev/cpuset/camera-daemon/mems 0
+    chown system system /dev/cpuset/camera-daemon
+    chown system system /dev/cpuset/camera-daemon/tasks
+    chmod 0664 /dev/cpuset/camera-daemon/tasks
+
+
+    # Create PERFD deamon related dirs
+    setprop ro.min_freq_0 384000
+    mkdir /data/misc/perfd 0755 root system
+    chmod 2755 /data/misc/perfd
+    mkdir /data/system/perfd 0770 root system
+    rm /data/system/perfd/default_values
+    chmod 2770 /data/system/perfd
+
+service perfd /vendor/bin/perfd
+   class main
+   user root
+   group root system
+   writepid /dev/cpuset/system-background/tasks
+   disabled
+
+# bugreport is triggered by holding down volume down, volume up and power
+service bugreport /system/bin/dumpstate -d -p -B -z \
+        -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
+    class main
+    disabled
+    oneshot
+    keycodes 114 115 116
+
+on property:sys.post_boot.parsed=1
+    start perfd
+
+on property:sys.boot_completed=1
+    start power_sh
+
+    # Enable UFS powersaving
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 1
+    write /sys/devices/soc/${ro.boot.bootdevice}/clkgate_enable 1
+    write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 1
+    write /sys/module/lpm_levels/parameters/sleep_disabled "N"
+
+
+   # update cpusets now that boot is complete and we want better load balancing
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/boost/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0-2
+
+    # Update DVR cpusets to runtime values.
+    write /dev/cpuset/kernel/cpus 0,1
+    write /dev/cpuset/system/performance/cpus 2
+    write /dev/cpuset/system/background/cpus 0
+    write /dev/cpuset/system/cpus 0,2
+    write /dev/cpuset/application/performance/cpus 3
+    write /dev/cpuset/application/background/cpus 1
+    write /dev/cpuset/application/cpus 1,3
+
+    # end boot time fs tune
+    write /sys/block/sda/queue/read_ahead_kb 512
+    write /sys/block/sda/queue/nr_requests 128
+    write /sys/block/dm-0/queue/read_ahead_kb 128
+    write /sys/block/dm-1/queue/read_ahead_kb 128
+    write /sys/block/sda/queue/iostats 1
+
+    # UFS health
+    chmod 755 /sys/kernel/debug/ufshcd0
+    chown 644 /sys/kernel/debug/ufshcd0/err_state
+    chmod 644 /sys/kernel/debug/ufshcd0/power_mode
+    chmod 644 /sys/kernel/debug/ufshcd0/host_regs
+    chmod 644 /sys/kernel/debug/ufshcd0/show_hba
+    chmod 644 /sys/kernel/debug/ufshcd0/dump_device_desc
+    chmod 755 /sys/kernel/debug/ufshcd0/stats
+    chmod 644 /sys/kernel/debug/ufshcd0/stats/req_stats
+    chmod 644 /sys/kernel/debug/ufshcd0/stats/query_stats
+    chmod 644 /sys/kernel/debug/ufshcd0/stats/err_stats
+
+service foreground_sh /vendor/bin/init.foreground.sh
+    class main
+    user root
+    group root system readproc
+    disabled
+    oneshot
+
+service power_sh /vendor/bin/init.power.sh
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+
+    # Enable sched boost
+    write /proc/sys/kernel/sched_boost 1
+
+     # Disable thermal hotplug to switch governor
+    write /sys/module/msm_thermal/core_control/enabled 0
+
+    # Set sync wakee policy tunable
+    write /proc/sys/kernel/sched_prefer_sync_wakee_to_waker 1
+
+    # Enable Adaptive LMK
+    # write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 1
+    write /sys/module/lowmemorykiller/parameters/vmpressure_file_min 81250
+
+    # Set idle GPU to 133 MHz
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_clock_mhz 133
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 133000000
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_clock_mhz 624
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000
+
+    write /sys/module/workqueue/parameters/power_efficient Y
+
+    # Set swappiness and cache pressure
+    write /proc/sys/vm/swappiness 5
+    write /proc/sys/vm/vfs_cache_pressure 10
     
+    write /sys/block/dm-0/queue/read_ahead_kb 256
+    write /sys/block/sda/queue/read_ahead_kb 256
+    write /sys/block/sde/queue/read_ahead_kb 256
+    write /sys/block/dm-0/queue/scheduler cfq
+    write /sys/block/sda/queue/scheduler cfq
+    write /sys/block/sde/queue/scheduler cfq
+
+    #Enable scsi block multiqueue
+    write /sys/module/scsi_mod/parameters/use_blk_mq N
+
+    write /sys/module/msm_thermal/core_control/enabled 0
+
+    # Set nice Level to 9
+    write /proc/sys/kernel/sched_upmigrate_min_nice 9
+
+on property:sys.boot_completed=1
+    trigger enable-low-power
+
+    # Set I/O squeduler
+    setprop sys.io.scheduler "cfq"
+
+on property:init.svc.recovery=running
+    trigger enable-low-power
 
     # VM
     write /proc/sys/vm/dirty_background_ratio 20
