@@ -2,5 +2,3 @@ allow hal_graphics_composer_default property_socket:sock_file { rw_file_perms };
 allow hal_graphics_composer_default init:unix_stream_socket { connectto };
 
 set_prop(hal_graphics_composer_default, debug_prop)
-allow hal_graphics_composer_default perfd:unix_stream_socket connectto;
-allow hal_graphics_composer_default perfd_data_file:sock_file write;
