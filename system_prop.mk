@@ -181,14 +181,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.ROTATION_ENABLE=1 \
     persist.dbg.volte_avail_ovr=1 \
     persist.dbg.vt_avail_ovr=1 \
-    persist.vendor.qti.telephony.vt_cam_interface=1 \
-    persist.vendor.radio.csg_info_avlbl=1 \
-    persist.vendor.radio.custom_ecc=1 \
-    persist.vendor.radio.force_on_dc=true \
-    persist.vendor.radio.lte_vrte_ltd=1 \
-    persist.vendor.radio.manual_nw_rej_ct=1 \
-    persist.vendor.radio.rat_on=combine \
-    persist.vendor.radio.sib16_support=1
+    persist.vendor.qti.telephony.vt_cam_interface=1
 
 #default SAR mode 0:off/1:on
 PRODUCT_PROPERTY_OVERRIDES += \
