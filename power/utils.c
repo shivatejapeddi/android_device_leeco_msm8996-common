@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-
+#include <cutils/properties.h>
 #include "utils.h"
 #include "list.h"
 #include "hint-data.h"
@@ -212,6 +212,14 @@ int is_interactive_governor(char* governor) {
 void interaction(int duration, int num_args, int opt_list[])
 {
 #ifdef INTERACTION_BOOST
+
+    char boost[PROP_VALUE_MAX];
+    int ret;
+
+    ret = property_get("interaction.boost", boost, "");
+
+   if (ret && (strcmp(boost, "1") == 0)) {
+
     static int lock_handle = 0;
 
     if (duration < 0 || num_args < 1 || opt_list[0] == NULL)
@@ -224,6 +232,7 @@ void interaction(int duration, int num_args, int opt_list[])
                 ALOGE("Failed to acquire lock.");
         }
     }
+ }
 #endif
 }
 
