@@ -36,14 +36,11 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 	private static final boolean DEBUG = false;
 	private static final String TAG = "LePref";
 	private static final String ENABLE_QC_KEY = "qc_setting";
-	private static final String ENABLE_HAL3_KEY = "hal3";
 	private static final String ENABLE_FOCUS_FIX = "focusfix_setting";
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
-	private static final String HAL3_SYSTEM_PROPERTY = "persist.camera.HAL3.enabled";
 	private static final String FOCUSFIX_SYSTEM_PROPERTY = "persist.camera.focus_fix";
         private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
-	private SwitchPreference mEnableHAL3;
 	private SwitchPreference mEnableFocusFix;
 
     private Context mContext;
@@ -68,10 +65,6 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
         mEnableQC.setOnPreferenceChangeListener(this);
 
-        mEnableHAL3 = (SwitchPreference) findPreference(ENABLE_HAL3_KEY);
-        mEnableHAL3.setChecked(SystemProperties.getBoolean(HAL3_SYSTEM_PROPERTY, false));
-        mEnableHAL3.setOnPreferenceChangeListener(this);
-
 				mEnableFocusFix = (SwitchPreference) findPreference(ENABLE_FOCUS_FIX);
         mEnableFocusFix.setChecked(SystemProperties.getBoolean(FOCUSFIX_SYSTEM_PROPERTY, false));
 				mEnableFocusFix.setOnPreferenceChangeListener(this);
@@ -92,17 +85,6 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 			SystemProperties.set(FOCUSFIX_SYSTEM_PROPERTY, "0");
 		}
     }
-  
-    // Control Camera2API
-    private void setEnableHAL3(boolean value) {
-	if(value) {
-		SystemProperties.set(HAL3_SYSTEM_PROPERTY, "1");
-	} else {
-			SystemProperties.set(HAL3_SYSTEM_PROPERTY, "0");
-	}
-	if (DEBUG) Log.d(TAG, "HAL3 setting changed");
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -127,20 +109,14 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 			mEnableQC.setChecked(value);
 			setEnableQC(value);
 			return true;
-		} 
-        if (ENABLE_HAL3_KEY.equals(key)) {
-			value = (Boolean) newValue;
-			mEnableHAL3.setChecked(value);
-			setEnableHAL3(value);
-			return true;
 		}
-         if (ENABLE_FOCUS_FIX.equals(key)) {
+			if (ENABLE_FOCUS_FIX.equals(key)) {
 				value = (Boolean) newValue;
 				mEnableFocusFix.setChecked(value);
 				setEnableFocusFix(value);
 				return true;
 		}
-       return false;
+      	return false;
     }
 
 }

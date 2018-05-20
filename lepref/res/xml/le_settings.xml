@@ -32,17 +32,4 @@
                 android:title="@string/kcal_title" />
 
     </PreferenceCategory>
-	
-    <PreferenceCategory
-        android:key="camera_pref"
-        android:title="@string/camera_pref_title" >
-
-        <SwitchPreference
-            android:key="hal3"
-            android:defaultValue="false"
-            android:title="@string/hal3_title"
-            android:summary="@string/hal3_summary" />
-
-	</PreferenceCategory>
-
 </PreferenceScreen>
