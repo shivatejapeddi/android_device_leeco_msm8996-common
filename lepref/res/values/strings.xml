@@ -38,10 +38,4 @@
     <string name="focusfix_settings_title">Camera</string>
     <string name="focusf_title">Focus Fix</string>
     <string name="focusf_summary">Enable/disable focus fix</string>
-
-    <!-- Camera -->
-    <string name="camera_pref_title">Camera</string>
-    <string name="hal3_title">Camera 2 API</string>
-    <string name="hal3_summary">Enable/disable API2 mode for camera</string>
-
 </resources>
