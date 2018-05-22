@@ -243,4 +243,5 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.VT_HYBRID_ENABLE=1 \
     persist.dbg.wfc_avail_ovr=1 \
-    persist.spectrum.profile=0
+    persist.spectrum.profile=0 \
+    persist.vendor.qti.telephony.vt_cam_interface=1
