@@ -90,6 +90,7 @@ AUDIO_FEATURE_ENABLED_SPKR_PROTECTION := false
 #AUDIO_FEATURE_ENABLED_WMA_OFFLOAD := true
 AUDIO_FEATURE_ENABLED_SOURCE_TRACKING := true
 AUDIO_FEATURE_ENABLED_PLAYBACK_ULL := true
+AUDIO_FEATURE_ENABLED_EXTN_RESAMPLER := true
 
 AUDIO_USE_LL_AS_PRIMARY_OUTPUT := true
 TARGET_USES_QCOM_MM_AUDIO := true
@@ -98,6 +99,9 @@ BOARD_USES_ALSA_AUDIO := true
 
 USE_CUSTOM_AUDIO_POLICY := 1
 USE_XML_AUDIO_POLICY_CONF := 1
+
+# Enable real time lockscreen charging current values
+BOARD_GLOBAL_CFLAGS += -DBATTERY_REAL_INFO
 
 # Bionic
 TARGET_LD_SHIM_LIBS := /system/vendor/lib/libmmcamera_ppeiscore.so|libshims_camera.so:/system/bin/mm-qcamera-daemon|libshims_qcamera-daemon.so
