@@ -381,5 +381,8 @@
 
     <!-- Button brightness -->
     <bool name="config_button_brightness_support">true</bool>
-
+	
+	<!-- Device specific doze package -->
+    <string name="config_customDozePackage">org.lineageos.settings.doze/org.lineageos.settings.doze.DozeSettingsActivity</string>
+	
 </resources>
