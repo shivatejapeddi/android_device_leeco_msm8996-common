@@ -115,6 +115,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     debug.sf.hw=1 \
     debug.egl.hw=1 \
     debug.gralloc.enable_fb_ubwc=1 \
+    debug.hwui.use_buffer_age=false \
     dev.pm.dyn_samplingrate=1 \
     persist.demo.hdmirotationlock=false \
     persist.debug.wfd.enable=1 \
