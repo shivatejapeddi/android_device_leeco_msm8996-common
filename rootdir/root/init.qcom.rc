@@ -28,6 +28,7 @@
 import init.qcom.power.rc
 import init.qcom.usb.rc
 import init.device.rc
+import init.rrps.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -851,7 +852,8 @@ service start_hci_filter /system/vendor/bin/wcnss_filter
     class late_start
     user bluetooth
     group bluetooth diag system wakelock
-    seclabel u:r:wcnss_filter:s0
+    capabilities BLOCK_SUSPEND
+#    seclabel u:r:wcnss_filter:s0
     disabled
 
 service config_bt_addr /system/vendor/bin/btnvtool -O
@@ -859,7 +861,7 @@ service config_bt_addr /system/vendor/bin/btnvtool -O
     user bluetooth
     group bluetooth radio
     oneshot
-    seclabel u:r:btnvtool:s0
+#    seclabel u:r:btnvtool:s0
 
 on property:wc_transport.start_root=true
     start hci_filter_root
@@ -870,8 +872,9 @@ on property:wc_transport.start_root=false
 service hci_filter_root /system/bin/wcnss_filter
     class late_start
     user bluetooth
-    group bluetooth oem_2901 system
-    seclabel u:r:wcnss_filter:s0
+    group bluetooth oem_2901 system wakelock
+    capabilities BLOCK_SUSPEND
+#    seclabel u:r:wcnss_filter:s0
     disabled
 
 service ftmd /system/bin/logwrapper /system/bin/ftmdaemon
@@ -1021,19 +1024,19 @@ service qcom-sh /system/bin/sh /init.qcom.sh
     class late_start
     user root
     oneshot
-    seclabel u:r:qti_init_shell:s0
+#   seclabel u:r:qti_init_shell:s0
 
 service hvdcp_opti /vendor/bin/hvdcp_opti
     class main
     user root
     group root
-    seclabel u:r:hvdcp:s0
+#   seclabel u:r:hvdcp:s0
 
 service charger /charger
     class charger
     group system graphics log
-    seclabel u:r:charger:s0
     writepid /dev/cpuset/system-background/tasks
+#   seclabel u:r:charger:s0
 
 on charger
     start hvdcp_opti

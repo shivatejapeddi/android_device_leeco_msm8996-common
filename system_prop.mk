@@ -230,3 +230,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.VT_HYBRID_ENABLE=1 \
     persist.dbg.wfc_avail_ovr=1
+
+
+# RRPS specific tweaks
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.pm.krnl_wl_block=1
