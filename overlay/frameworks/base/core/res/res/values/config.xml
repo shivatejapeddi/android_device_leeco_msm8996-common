@@ -358,17 +358,13 @@
             32 - Camera
             64 - Volume rocker
          For example, a device with Home, Back and Menu keys would set this
-         config to 7. -->
-    <integer name="config_deviceHardwareWakeKeys">64</integer>
+         config to 7.
+    <integer name="config_deviceHardwareWakeKeys">64</integer-->
 
     <!-- Default value for proximity check on screen wake
      NOTE ! - Enable for devices that have a fast response proximity sensor (ideally < 300ms)-->
     <bool name="config_proximityCheckOnWake">true</bool>
     <bool name="config_proximityCheckOnWakeEnabledByDefault">true</bool>
-
-    <!-- Does the notification LED support multiple colors?
-         Used to decide if the user can change the colors -->
-    <bool name="config_multiColorNotificationLed">true</bool>
 
     <!-- Is the battery LED intrusive? -->
     <bool name="config_intrusiveBatteryLed">true</bool>
@@ -382,5 +378,36 @@
 
     <!-- Button brightness -->
     <bool name="config_button_brightness_support">true</bool>
+
+
+    <!-- Whether the device supports Smart Pixels -->
+    <bool name="config_enableSmartPixels">false</bool>
+
+    <!-- Multicolor Led Support -->
+    <bool name="config_multicolorled">true</bool>
+
+    <!-- Control the behavior when the user triple presses the power button.
+            0 - Nothing
+            1 - Toggle theater mode setting
+            2 - Brightness boost
+    -->
+    <integer name="config_triplePressOnPowerBehavior">2</integer>
+
+    <!-- Override the default detection behavior for the framework method
+         android.view.ViewConfiguration#hasPermanentMenuKey().
+         Valid settings are:
+         0 - No change. Use the default autodetection behavior.
+         1 - The device DOES have a permanent menu key; ignore autodetection.
+         2 - The device DOES NOT have a permanent menu key; ignore autodetection. -->
+    <integer name="config_overrideHasPermanentMenuKey">2</integer>
+
+    <!-- For performance and storage reasons, limit the number of fingerprints per user -->
+    <integer name="config_fingerprintMaxTemplatesPerUser">6</integer>
+
+    <!-- Enable full screen DT2S in lockscreen -->
+    <bool name="fullScreenDT2S">true</bool>
+
+    <!-- Whether notify fingerprint client of successful cancelled authentication -->
+    <bool name="config_notifyClientOnFingerprintCancelSuccess">true</bool>
 	
 </resources>
