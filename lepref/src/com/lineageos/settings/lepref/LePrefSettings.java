@@ -34,7 +34,7 @@ import java.util.Date;
 import android.util.Log;
 import android.os.SystemProperties;
 import java.io.*;
-import android.widget.Toast;  
+import android.widget.Toast;
 import android.preference.ListPreference;
 
 import com.lineageos.settings.lepref.R;
@@ -65,7 +65,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 	private SwitchPreference mKrnlWlQcomRX;
 
     private Preference mSaveLog;
-	
+
     private Context mContext;
     private SharedPreferences mPreferences;
 
@@ -83,7 +83,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
                      }
                 });
         mContext = getApplicationContext();
-        
+ 
         mEnableQC = (SwitchPreference) findPreference(QC_SYSTEM_PROPERTY);
         if( mEnableQC != null ) {
             mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
@@ -96,7 +96,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
             mDeepIdle.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_DEEP_IDLE, false));
             mDeepIdle.setOnPreferenceChangeListener(this);
         }
-        
+
         mCpuidleDeepestState = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_CPUIDLE_DS);
         if( mCpuidleDeepestState != null ) {
             mCpuidleDeepestState.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_CPUIDLE_DS, false));
@@ -120,6 +120,9 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
             mKrnlWlQcomRX.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX, false));
             mKrnlWlQcomRX.setOnPreferenceChangeListener(this);
         }
+
+}
+
     private void setEnable(String key, boolean value) {
 	    if(value) {
 		    SystemProperties.set(key, "1");

@@ -37,13 +37,14 @@
     <string name="qc_summary">Enable/disable quick charge settings</string>
 
     <!-- Camera -->
-
+    <string name="camera_pref_title">Camera</string>
     <string name="camera_focus_fix_title">Autofocus Fix</string>
     <string name="camera_focus_fix_summary">For devices with autofocus problem</string>
 
-    <!-- Misc -->
 
-    <string name="misc_settings_title">Misc</string>
+    <!-- Powersave -->
+    <string name="powersave_settings_title">Power Save</string>
+
     <string name="deep_idle_title">Aggressive Idle Mode</string>
     <string name="deep_idle_summary">Deep Idle immediately after screen off</string>
 
