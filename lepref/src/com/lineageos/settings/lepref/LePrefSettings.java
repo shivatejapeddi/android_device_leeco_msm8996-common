@@ -54,6 +54,8 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
     private static final String SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK = "persist.pm.krnl_wl_block";
     private static final String SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX = "persist.pm.krnl_wl_qcom_rx";
 
+    private static final String SYSTEM_PROPERTY_PM_KTHREADS = "persist.pm.kthreads";
+
         private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mDeepIdle;
@@ -61,6 +63,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 	private SwitchPreference mCpuidleDeepestState;
 	private SwitchPreference mCameraFocusFix;
 
+	private SwitchPreference mKThreads;
 	private SwitchPreference mKrnlWlBlock;
 	private SwitchPreference mKrnlWlQcomRX;
 
@@ -113,6 +116,12 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         if( mKrnlWlBlock != null ) {
             mKrnlWlBlock.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK, false));
             mKrnlWlBlock.setOnPreferenceChangeListener(this);
+        }
+
+        mKThreads = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KTHREADS);
+        if( mKThreads != null ) {
+            mKThreads.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KTHREADS, false));
+            mKThreads.setOnPreferenceChangeListener(this);
         }
 
         mKrnlWlQcomRX = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX);

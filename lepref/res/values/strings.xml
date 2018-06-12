@@ -57,5 +57,7 @@
     <string name="cpuidle_ds_title">Cpuidle: Use deepest state</string>
     <string name="cpuidle_ds_summary">Ignore governor assumption and always use deepest idle state</string>
 
+    <string name="kthreads_title">Kernel threads on LITTLE core</string>
+    <string name="kthreads_summary">Schedule kernel threads on LITTLE core only</string>
 
 </resources>
