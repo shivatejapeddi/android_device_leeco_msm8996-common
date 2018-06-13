@@ -26,22 +26,36 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Date;
+
+
 import android.util.Log;
 import android.os.SystemProperties;
 import java.io.*;
 import android.widget.Toast;
 import android.preference.ListPreference;
 
+import com.lineageos.settings.lepref.R;
+
 public class LePrefSettings extends PreferenceActivity implements OnPreferenceChangeListener {
 	private static final boolean DEBUG = false;
 	private static final String TAG = "LePref";
-	private static final String ENABLE_QC_KEY = "qc_setting";
-	private static final String ENABLE_FOCUS_FIX = "focusfix_setting";
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
-	private static final String FOCUSFIX_SYSTEM_PROPERTY = "persist.camera.focus_fix";
+        private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
+        private static final String SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK = "persist.pm.krnl_wl_block";
+        private static final String SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX = "persist.pm.krnl_wl_qcom_rx";
+        private static final String SYSTEM_PROPERTY_PM_KTHREADS = "persist.pm.kthreads";
         private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
-	private SwitchPreference mEnableFocusFix;
+	private SwitchPreference mCameraFocusFix;
+	private SwitchPreference mKThreads;
+        private SwitchPreference mKrnlWlBlock;
+	private SwitchPreference mKrnlWlQcomRX;
+
+    private Preference mSaveLog;
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -61,30 +75,46 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
                 });
         mContext = getApplicationContext();
 
-        mEnableQC = (SwitchPreference) findPreference(ENABLE_QC_KEY);
-        mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
-        mEnableQC.setOnPreferenceChangeListener(this);
+        mEnableQC = (SwitchPreference) findPreference(QC_SYSTEM_PROPERTY);
+        if( mEnableQC != null ) {
+            mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
+            mEnableQC.setOnPreferenceChangeListener(this);
+        }
 
-				mEnableFocusFix = (SwitchPreference) findPreference(ENABLE_FOCUS_FIX);
-        mEnableFocusFix.setChecked(SystemProperties.getBoolean(FOCUSFIX_SYSTEM_PROPERTY, false));
-				mEnableFocusFix.setOnPreferenceChangeListener(this);
+        mCameraFocusFix = (SwitchPreference) findPreference(SYSTEM_PROPERTY_CAMERA_FOCUS_FIX);
+        if( mCameraFocusFix != null ) {
+            mCameraFocusFix.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_CAMERA_FOCUS_FIX, false));
+            mCameraFocusFix.setOnPreferenceChangeListener(this);
+        }
+
+        mKrnlWlBlock = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK);
+        if( mKrnlWlBlock != null ) {
+            mKrnlWlBlock.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK, false));
+            mKrnlWlBlock.setOnPreferenceChangeListener(this);
+        }
+
+        mKThreads = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KTHREADS);
+        if( mKThreads != null ) {
+            mKThreads.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KTHREADS, false));
+            mKThreads.setOnPreferenceChangeListener(this);
+        }
+
+        mKrnlWlQcomRX = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX);
+        if( mKrnlWlQcomRX != null ) {
+            mKrnlWlQcomRX.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX, false));
+            mKrnlWlQcomRX.setOnPreferenceChangeListener(this);
+        }
     }
 
-	// Control Quick Charge
-    private void setEnableQC(boolean value) {
-		if(value) {
-			SystemProperties.set(QC_SYSTEM_PROPERTY, "1");
-		} else {
-			SystemProperties.set(QC_SYSTEM_PROPERTY, "0");
-		}
+    private void setEnable(String key, boolean value) {
+	    if(value) {
+		    SystemProperties.set(key, "1");
+    	} else {
+    		SystemProperties.set(key, "0");
+    	}
+    	if (DEBUG) Log.d(TAG, key + " setting changed");
     }
-		private void setEnableFocusFix(boolean value) {
-		if(value) {
-			SystemProperties.set(FOCUSFIX_SYSTEM_PROPERTY, "1");
-		} else {
-			SystemProperties.set(FOCUSFIX_SYSTEM_PROPERTY, "0");
-		}
-    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -104,19 +134,11 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         final String key = preference.getKey();
         boolean value;
         String strvalue;
-        if (ENABLE_QC_KEY.equals(key)) {
-			value = (Boolean) newValue;
-			mEnableQC.setChecked(value);
-			setEnableQC(value);
-			return true;
-		}
-			if (ENABLE_FOCUS_FIX.equals(key)) {
-				value = (Boolean) newValue;
-				mEnableFocusFix.setChecked(value);
-				setEnableFocusFix(value);
-				return true;
-		}
-      	return false;
-    }
+        if (DEBUG) Log.d(TAG, "Preference changed.");
 
+    	value = (Boolean) newValue;
+    	((SwitchPreference)preference).setChecked(value);
+    	setEnable(key,value);
+    	return true;
+    }
 }

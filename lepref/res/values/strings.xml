@@ -35,7 +35,22 @@
     <string name="battery_settings_title">Battery</string>
     <string name="qc_title">Quick Charge</string>
     <string name="qc_summary">Enable/disable quick charge settings</string>
-    <string name="focusfix_settings_title">Camera</string>
-    <string name="focusf_title">Focus Fix</string>
-    <string name="focusf_summary">Enable/disable focus fix</string>
+
+    <!-- Camera -->
+
+    <string name="camera_focus_fix_title">Autofocus Fix</string>
+    <string name="camera_focus_fix_summary">For devices with autofocus problem</string>
+
+    <!-- Powersave -->
+    <string name="powersave_settings_title">Power Save</string>
+
+    <string name="krnl_wl_block_title">Kernel wakelock blocker</string>
+    <string name="krnl_wl_block_summary">Enable kernel wakelock blocker</string>
+
+    <string name="krnl_wl_qcom_rx_title">Block QCOM RX wakelock</string>
+    <string name="krnl_wl_qcom_rx_summary">Block QCOM RX wakelock</string>
+
+    <string name="kthreads_title">Kernel threads on LITTLE core</string>
+    <string name="kthreads_summary">Schedule kernel threads on LITTLE core only</string>
+
 </resources>
