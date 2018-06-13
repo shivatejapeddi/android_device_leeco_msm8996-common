@@ -5,16 +5,36 @@ on init
     write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 0
     write /sys/module/lpm_levels/parameters/sleep_disabled Y
 
-on boot
-    # Bring back main cores CPU 0,2
-    write /sys/devices/system/cpu/cpu0/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
+    # set default schedTune value for foreground/top-app (only affects EAS)
+    write /dev/stune/foreground/schedtune.prefer_idle 1
+    write /dev/stune/top-app/schedtune.boost 1
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /dev/stune/rt/schedtune.boost 0
+    write /dev/stune/rt/schedtune.prefer_idle 1
 
-    # Update cpusets now that CPUs are up
-    write /dev/cpuset/foreground/cpus 0-3
-    write /dev/cpuset/background/cpus 0-3
-    write /dev/cpuset/system-background/cpus 0-3
+on boot
+    
+    # update cpusets now that boot is complete and we want better load balancing
     write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/boost/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0-1,3
+
+    # Will only work if using EAS
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/iowait_boost_enable 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 500
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 20000
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/iowait_boost_enable 0
+
+    # Enable input boost configuration
+    write /sys/module/cpu_boost/parameters/input_boost_freq "0:1036800 2:0"
+    write /sys/module/cpu_boost/parameters/dynamic_stune_boost 15
+    write /sys/module/cpu_boost/parameters/input_boost_ms 175
 
     # Add a cpuset for the camera daemon (we want all cores for camera)
     mkdir /dev/cpuset/camera-daemon
@@ -25,7 +45,11 @@ on boot
     chmod 0664 /dev/cpuset/camera-daemon/tasks
 
     # Enable sched boost
-    write /proc/sys/kernel/sched_boost 1
+     #write /proc/sys/kernel/sched_boost 1
+
+
+    # Set perfd properties
+    setprop sys.post_boot.parsed 1
 
 on enable-low-power
     # Enable all LPMs (this will enable C4, D4, D3, E4 and M3 LPMs)
@@ -134,6 +158,10 @@ on enable-low-power
     write /dev/cpuset/background/cpus 0
     write /dev/cpuset/system-background/cpus 0-2
 
+
+    # Set perfd properties
+    setprop sys.post_boot.parsed 1
+
 on charger
     wait /dev/block/platform/soc/${ro.boot.bootdevice}
     symlink /dev/block/platform/soc/${ro.boot.bootdevice} /dev/block/bootdevice
@@ -156,7 +184,4 @@ service charger /charger
 #seclabel u:r:charger:s0
 
 on property:init.svc.recovery=running
-    trigger enable-low-power
-
-on property:sys.boot_completed=1
     trigger enable-low-power
