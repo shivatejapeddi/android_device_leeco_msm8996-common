@@ -37,7 +37,7 @@
     <string name="qc_summary">Enable/disable quick charge settings</string>
 
     <!-- Camera -->
-
+    <string name="camera_pref_title">Camera</string>
     <string name="camera_focus_fix_title">Autofocus Fix</string>
     <string name="camera_focus_fix_summary">For devices with autofocus problem</string>
 
