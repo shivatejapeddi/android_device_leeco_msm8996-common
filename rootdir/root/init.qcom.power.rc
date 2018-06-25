@@ -144,15 +144,12 @@ on enable-low-power
 
     # Set thermal restrictions
     write /sys/kernel/msm_thermal/enabled 0
-    write /sys/kernel/msm_thermal/zone0 "1401600 1785600 40 38"
-    write /sys/kernel/msm_thermal/zone1 "1324800 1555200 41 40"
-    write /sys/kernel/msm_thermal/zone2 "1228800 1478400 42 41"
-    write /sys/kernel/msm_thermal/zone3 "1228800 1401600 43 42"
-    write /sys/kernel/msm_thermal/zone4 "1190400 1324800 44 43"
-    write /sys/kernel/msm_thermal/zone5 "1190400 1248000 46 44"
-    write /sys/kernel/msm_thermal/zone6 "1113600 1190400 48 46"
-    write /sys/kernel/msm_thermal/zone7 "1036800 940800 53 50"
-    write /sys/kernel/msm_thermal/zone8 "729600 729600 65 60"
+    write /sys/kernel/msm_thermal/zone0 "1401600 1555200 40 38"
+    write /sys/kernel/msm_thermal/zone1 "1324800 1478400 42 40"
+    write /sys/kernel/msm_thermal/zone2 "1228800 1401600 43 42"
+    write /sys/kernel/msm_thermal/zone3 "1190400 1324800 57 43"
+    write /sys/kernel/msm_thermal/zone4 "1113600 1190400 60 57"
+    write /sys/kernel/msm_thermal/zone5 "1036800 940800  65 60"
     write /sys/kernel/msm_thermal/sampling_ms 5000
     write /sys/kernel/msm_thermal/enabled 1
 
@@ -174,9 +171,9 @@ on enable-low-power
     write /proc/sys/vm/swappiness 8
     write /proc/sys/vm/vfs_cache_pressure 10
 
-    write /sys/block/dm-0/queue/read_ahead_kb 512
-    write /sys/block/sda/queue/read_ahead_kb 512
-    write /sys/block/sde/queue/read_ahead_kb 512
+    write /sys/block/dm-0/queue/read_ahead_kb 128
+    write /sys/block/sda/queue/read_ahead_kb 128
+    write /sys/block/sde/queue/read_ahead_kb 128
     write /sys/block/dm-0/queue/scheduler maple
     write /sys/block/sda/queue/scheduler maple
     write /sys/block/sde/queue/scheduler maple
