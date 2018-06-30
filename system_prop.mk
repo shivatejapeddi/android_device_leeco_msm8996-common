@@ -237,4 +237,5 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # specific tweaks
  PRODUCT_PROPERTY_OVERRIDES += \
-     persist.pm.krnl_wl_block=1
+     persist.pm.krnl_wl_block=1 \
+     persist.pm.thermalcap=1

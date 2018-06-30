@@ -47,11 +47,11 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
         private static final String SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK = "persist.pm.krnl_wl_block";
         private static final String SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX = "persist.pm.krnl_wl_qcom_rx";
-        private static final String SYSTEM_PROPERTY_PM_KTHREADS = "persist.pm.kthreads";
+        private static final String SYSTEM_PROPERTY_PM_THERMALCAP = "persist.pm.thermalcap";
         private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mCameraFocusFix;
-	private SwitchPreference mKThreads;
+	private SwitchPreference mThermalcap;
         private SwitchPreference mKrnlWlBlock;
 	private SwitchPreference mKrnlWlQcomRX;
 
@@ -93,10 +93,10 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
             mKrnlWlBlock.setOnPreferenceChangeListener(this);
         }
 
-        mKThreads = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KTHREADS);
-        if( mKThreads != null ) {
-            mKThreads.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KTHREADS, false));
-            mKThreads.setOnPreferenceChangeListener(this);
+        mThermalcap = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_THERMALCAP);
+        if( mThermalcap != null ) {
+            mThermalcap.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_THERMALCAP, false));
+            mThermalcap.setOnPreferenceChangeListener(this);
         }
 
         mKrnlWlQcomRX = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX);
