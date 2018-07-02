@@ -28,7 +28,7 @@
 import init.qcom.power.rc
 import init.qcom.usb.rc
 import init.device.rc
-import init.rrps.rc
+import init.aex.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
@@ -324,6 +324,12 @@ on post-fs-data
     rm /data/system/perfd/default_values
     chmod 2770 /data/system/perfd
 
+    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
+    chmod 0660 /sys/class/kgsl/kgsl-3d0/devfreq/max_freq
+    chown system system /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
+    chmod 0660 /sys/class/kgsl/kgsl-3d0/devfreq/min_freq
+    chown system system /sys/class/devfreq/soc:qcom,gpubw/min_freq
+    chmod 0660 /sys/class/devfreq/soc:qcom,gpubw/min_freq
 
     # NFC local data and nfcee xml storage
     mkdir /data/nfc 0770 nfc nfc

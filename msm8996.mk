@@ -320,16 +320,16 @@ PRODUCT_PACKAGES += \
     android.hardware.dumpstate@1.0-service.x2
 
 PRODUCT_PROPERTY_OVERRIDES += ro.hardware.power=x2
- 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
+
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
 
 # Qualcomm broadcast whitelist
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/qti_whitelist.xml:system/etc/sysconfig/qti_whitelist.xml
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
+#PRODUCT_COPY_FILES += \
+#    $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
 
 # Qualcomm
 PRODUCT_COPY_FILES += \
