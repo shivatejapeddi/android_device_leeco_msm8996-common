@@ -22,10 +22,6 @@ DEVICE_PACKAGE_OVERLAYS += \
 # System properties
 -include $(LOCAL_PATH)/system_prop.mk
 
-# Ramdisk
-PRODUCT_COPY_FILES += \
-    $(call find-copy-subdir-files,*,device/leeco/msm8996-common/rootdir/root,root)
-
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
@@ -155,6 +151,15 @@ PRODUCT_PACKAGES += \
     cneapiclient \
     com.quicinc.cne \
     services-ext
+
+# Common init scripts
+PRODUCT_PACKAGES += \
+    fstab.qcom \
+    init.qcom.rc \
+    init.qcom.sh \
+    init.qcom.power.rc \
+    init.qcom.usb.rc \
+    ueventd.qcom.rc
 
 # Display
 PRODUCT_PACKAGES += \
