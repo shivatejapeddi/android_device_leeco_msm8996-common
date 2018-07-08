@@ -972,7 +972,7 @@ service qseeproxydaemon /vendor/bin/qseeproxydaemon
     group system
     writepid /dev/cpuset/system-background/tasks
 
-service qcom-sh /vendor/etc/sh /init.qcom.sh
+service qcom-sh /vendor/etc/init.qcom.sh
     class late_start
     user root
     oneshot
