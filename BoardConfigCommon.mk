@@ -142,7 +142,7 @@ BOARD_VENDORIMAGE_PARTITION_SIZE := 567279616
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
 TARGET_COPY_OUT_VENDOR := vendor
-TARGET_USES_MKE2FS := true
+
 
 # Power
 TARGET_HAS_NO_WIFI_STATS := true
@@ -252,6 +252,6 @@ endif
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-#BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
+BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
 
 -include vendor/leeco/msm8996-common/BoardConfigVendor.mk
