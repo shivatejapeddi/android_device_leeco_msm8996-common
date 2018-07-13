@@ -69,6 +69,8 @@ bt.max.hfpclient.connections=1
 qcom.bluetooth.soc=rome
 ro.bluetooth.wipower=true
 ro.bluetooth.emb_wp_mode=true
+ro.bluetooth.ftm_enabled=true
+
 
 # System property for cabl
 

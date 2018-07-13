@@ -148,13 +148,15 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     cneapiclient \
     com.quicinc.cne \
-    services-ext
+    services-ext \
+    libcnefeatureconfig
 
 # Common init scripts
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.qcom.rc \
     init.qcom.sh \
+    init.qcom.bt.sh \
     init.qcom.power.rc \
     init.qcom.usb.rc \
     ueventd.qcom.rc
@@ -264,11 +266,13 @@ PRODUCT_PACKAGES += \
 
 # Keymaster
 PRODUCT_PACKAGES += \
-    android.hardware.keymaster@3.0-impl
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.keymaster@3.0-service \
+    android.hardware.keymaster@3.0
 
 # Lights
-PRODUCT_PACKAGES += \
-    android.hardware.light@2.0-service.x2_8996
+#PRODUCT_PACKAGES += \
+#    android.hardware.light@2.0-service.x2_8996
 
 # LiveDisplay native
 #RODUCT_PACKAGES += \
@@ -334,7 +338,6 @@ PRODUCT_PACKAGES += \
 
 # RIL
 PRODUCT_PACKAGES += \
-    android.hardware.broadcastradio@1.0-impl \
     librmnetctl \
     rmnetcli \
     libxml2 \
@@ -414,7 +417,7 @@ PRODUCT_COPY_FILES += \
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp \
+    persist.sys.usb.config=adb \
     ro.adb.secure=0
 
 # Model is set via init library
