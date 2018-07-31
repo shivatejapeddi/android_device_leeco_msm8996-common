@@ -264,5 +264,9 @@
 # misc permissions for force upgrade
 /dev/block/sda4           0660   system     system
 
+<<<<<<< HEAD:prebuilt/vendor/ueventd.rc
 # DeviceInfo
 /dev/block/platform/soc/624000.ufshc/by-name/devinfo     0640   system     system
+=======
+/sys/devices/platform/kcal_ctrl.0/* 0666 system system
+>>>>>>> 52d0ed6... msm8996-common : import LePref and Build to vendor:rootdir/etc/ueventd.qcom.rc

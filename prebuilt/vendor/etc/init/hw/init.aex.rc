@@ -1,0 +1,74 @@
+on init
+    export TERMINFO /system/etc/terminfo
+    export TERM linux
+
+on post-fs-data
+
+    # Sensors
+    mkdir /data/misc/sensors
+    chmod 0775 /data/misc/sensors
+    chmod 0775 /persist/sensors
+    chmod 0664 /persist/sensors/sensors_settings
+    chmod 0664 /persist/sensors/gyro_sensitity_cal
+    chown system root /persist/sensors/sensors_settings
+    chown system root /persist/sensors/gyro_sensitity_cal
+
+    # Time services
+    mkdir /data/vendor/time 0775 system system
+    
+
+    mkdir /data/dpm/nsrm 0771 system system
+    chown system system /data/dpm/nsrm
+
+
+on boot
+
+    # Torch
+    chown system system /sys/class/leds/torch-light0/brightness
+    chown system system /sys/class/leds/torch-light1/brightness
+    chmod 0666 /sys/class/leds/torch-light0/brightness
+    chmod 0666 /sys/class/leds/torch-light1/brightness
+
+    # Camera Flash/Torch control
+    chown system system /sys/devices/soc/soc:qcom,camera-flash/flashled1
+    chown system system /sys/devices/soc/soc:qcom,camera-flash/flashled2
+
+    chmod 0666 /sys/devices/soc/soc:qcom,camera-flash/flashled1
+    chmod 0666 /sys/devices/soc/soc:qcom,camera-flash/flashled2
+
+
+# cpuidle use deepest state
+on property:persist.pm.cpuidle_ds=1
+    write /sys/module/cpuidle/parameters/use_deepest_state 1
+
+on property:persist.pm.cpuidle_ds=0
+    write /sys/module/cpuidle/parameters/use_deepest_state 0
+
+on property:persist.pm.krnl_wl_block=0
+    write /sys/module/wakeup/parameters/enable_wakelock_blocker 0
+
+on property:persist.pm.krnl_wl_block=1
+    write /sys/module/wakeup/parameters/enable_wakelock_blocker 1
+
+on property:persist.pm.krnl_wl_qcom_rx=0
+    write /sys/module/wakeup/parameters/enable_qcom_rx_wakelock_ws 1
+
+on property:persist.pm.krnl_wl_qcom_rx=1
+    write /sys/module/wakeup/parameters/enable_qcom_rx_wakelock_ws 0
+
+# adb over network
+on property:service.adb.tcp.port=5555
+    stop adbd
+    start adbd
+
+on property:service.adb.tcp.port=-1
+    stop adbd
+    start adbd
+
+
+# autofocus fix
+on property:persist.camera.focus_fix=1
+    write /sys/module/msm_actuator/parameters/use_focus_fix 1
+
+on property:persist.camera.focus_fix=0
+    write /sys/module/msm_actuator/parameters/use_focus_fix 0

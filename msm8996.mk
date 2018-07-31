@@ -283,6 +283,11 @@ PRODUCT_PACKAGES += \
     libOmxVenc \
     libstagefrighthw
 
+# LePref settigs modules
+PRODUCT_PACKAGES += \
+    LePref
+
+
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.0-service-qti
