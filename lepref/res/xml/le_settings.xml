@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:key="camera_pref"
+        android:title="@string/camera_pref_title" >
+
+        <SwitchPreference
+            android:key="persist.camera.focus_fix"
+            android:defaultValue="false"
+            android:title="@string/camera_focus_fix_title"
+            android:summary="@string/camera_focus_fix_summary" />
+
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="batt"
+        android:title="@string/battery_settings_title" >
+
+        <SwitchPreference
+            android:key="persist.sys.le_fast_chrg_enable"
+            android:defaultValue="false"
+            android:title="@string/qc_title"
+            android:summary="@string/qc_summary" />
+  </PreferenceCategory>
+
+
+    <PreferenceCategory
+            android:title="@string/graphics_title">
+
+        <PreferenceScreen
+                android:key="kcal"
+                android:fragment="com.lineageos.settings.lepref.DisplayCalibration"
+                android:summary="@string/kcal_summary"
+                android:title="@string/kcal_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="powersave"
+        android:title="@string/powersave_settings_title" >
+
+       <SwitchPreference
+            android:key="persist.pm.krnl_wl_block"
+            android:defaultValue="false"
+            android:title="@string/krnl_wl_block_title"
+            android:summary="@string/krnl_wl_block_summary" />
+
+        <SwitchPreference
+            android:key="persist.pm.krnl_wl_qcom_rx"
+            android:defaultValue="false"
+            android:title="@string/krnl_wl_qcom_rx_title"
+            android:summary="@string/krnl_wl_qcom_rx_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
