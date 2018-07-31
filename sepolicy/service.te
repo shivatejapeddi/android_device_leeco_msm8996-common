@@ -1,1 +1,1 @@
-type fingerprintd_custom_service, service_manager_type;
+type fidoca_service, service_manager_type;
