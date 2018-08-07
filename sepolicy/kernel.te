@@ -1,2 +1,0 @@
-allow kernel debugfs_ipc:dir search;
-r_dir_file(kernel, firmware_file)

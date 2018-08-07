@@ -4,12 +4,3 @@ allow system_server touchpanel_file:file rw_file_perms;
 get_prop(system_server, alarm_boot_prop)
 
 allow system_server persist_file:dir { write };
-
-# rpm
-r_dir_file(system_server, debugfs_rpm)
-
-allowxperm system_server self:udp_socket ioctl priv_sock_ioctls;
-allow system_server mpctl_data_file:dir search;
-allow system_server mpctl_data_file:sock_file write;
-allow system_server mpctl_socket:dir search;
-allow system_server mpctl_socket:sock_file write;

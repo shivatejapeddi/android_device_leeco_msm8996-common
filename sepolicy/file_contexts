@@ -3,8 +3,6 @@
 
 # data
 /data/vendor/nfc(/.*)?                                                   u:object_r:nfc_data_file:s0
-/data/misc/perfd(/.*)?                u:object_r:perfd_data_file:s0
-/data/system/perfd(/.*)?              u:object_r:perfd_data_file:s0
 
 # executables
 /system/vendor/bin/hw/android\.hardware\.biometrics\.fingerprint@2\.0-service-custom u:object_r:hal_fingerprint_default_exec:s0
@@ -18,14 +16,4 @@
 # sysfs
 /sys/devices/soc/75ba000.i2c/i2c-12/12-0020/input/input2/0dbutton        u:object_r:touchpanel_file:s0
 
-# Binaries
-/(vendor|system/vendor)/bin/perfd     u:object_r:perfd_exec:s0
-
 /data/misc/tloc(/.*)?                                                    u:object_r:tlocd_data_file:s0
-
- # HALs
-/system/vendor/bin/hw/android\.hardware\.dumpstate@1\.0-service.x2    u:object_r:hal_dumpstate_impl_exec:s0
-/system/vendor/bin/hw/android\.hardware\.power@1\.0-service.x2            u:object_r:hal_power_default_exec:s0
-
-# Power management
-/sys/module/lpm_levels/parameters(/.*)?                             u:object_r:sysfs_power_management:s0
