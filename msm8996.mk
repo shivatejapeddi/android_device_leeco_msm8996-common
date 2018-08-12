@@ -389,9 +389,9 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/thermal-engine-8996.conf:$(TARGET_COPY_OUT_VENDOR)/etc/thermal-engine-8996.conf
 
 # Tetheroffload
-PRODUCT_PACKAGES += \
-    ipacm \
-    IPACM_cfg.xml
+#PRODUCT_PACKAGES += \
+#    ipacm \
+#    IPACM_cfg.xml
 
 # TextClassifier smart selection model files
 PRODUCT_PACKAGES += \
@@ -415,7 +415,7 @@ PRODUCT_PACKAGES += \
 
 # VNDK:
 PRODUCT_PACKAGES += \
-vndk_package
+    vndk_package
 
 # VR
 PRODUCT_PACKAGES += \
