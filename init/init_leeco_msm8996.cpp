@@ -41,12 +41,9 @@
 #include <android-base/properties.h>
 #include <android-base/strings.h>
 
-#define _REALLY_INCLUDE_SYS__SYSTEM_PROPERTIES_H_
-#include <sys/_system_properties.h>
 
 #include "vendor_init.h"
 #include "property_service.h"
-#include "util.h"
 
 #define DEVINFO_FILE "/dev/block/sde21"
 
@@ -55,109 +52,8 @@ using android::base::GetProperty;
 using android::base::ReadFileToString;
 using android::init::property_set;
 
-void property_override(const std::string& name, const std::string& value)
-{
-    size_t valuelen = value.size();
 
-    prop_info* pi = (prop_info*) __system_property_find(name.c_str());
-    if (pi != nullptr) {
-        __system_property_update(pi, value.c_str(), valuelen);
-    }
-    else {
-        int rc = __system_property_add(name.c_str(), name.size(), value.c_str(), valuelen);
-        if (rc < 0) {
-            LOG(ERROR) << "property_set(\"" << name << "\", \"" << value << "\") failed: "
-                       << "__system_property_add failed";
-        }
-    }
-}
-
-void property_override_dual(const std::string& system_prop, const std::string& vendor_prop, const std::string& value)
-{
-    property_override(system_prop, value);
-    property_override(vendor_prop, value);
-}
-
-void init_target_properties()
-{
-    std::string device;
-    int unknownDevice = 1;
-
-    if (ReadFileToString(DEVINFO_FILE, &device)) {
-        LOG(INFO) << "DEVINFO: " << device;
-
-        if (!strncmp(device.c_str(), "le_zl0_whole_netcom", 19)) {
-            // This is LEX722
-            property_override_dual("ro.product.device", "ro.vendor.product.device", "le_zl0");
-            property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX722");
-            property_set("persist.data.iwlan.enable", "false");
-            // Dual SIM
-            property_set("persist.radio.multisim.config", "dsds");
-            // Power profile
-            property_set("ro.power_profile.override", "power_profile_zl0");
-            unknownDevice = 0;
-        }
-        else if (!strncmp(device.c_str(), "le_zl1_oversea", 14)) {
-            // This is LEX727
-            property_override_dual("ro.product.device", "ro.vendor.product.device", "le_zl1");
-            property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX727");
-            property_override_dual("ro.product.name", "ro.vendor.product.name", "ZL1_NA");
-            property_set("persist.data.iwlan.enable", "true");
-            // Single SIM
-            property_set("persist.radio.multisim.config", "NA");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,eSE1");
-            unknownDevice = 0;
-        }
-        else if (!strncmp(device.c_str(), "le_zl1", 6)) {
-            // This is LEX720
-            property_override_dual("ro.product.device", "ro.vendor.product.device", "le_zl1");
-            property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX720");
-            property_set("persist.data.iwlan.enable", "false");
-            // Dual SIM
-            property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
-            unknownDevice = 0;
-        }
-        else if (!strncmp(device.c_str(), "le_x2_na_oversea", 16)) {
-            // This is LEX829
-            property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX829");
-            // Dual SIM
-            property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
-            unknownDevice = 0;
-        }
-        else if (!strncmp(device.c_str(), "le_x2_india", 11)) {
-            // This is LEX821
-            property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX821");
-            // Dual SIM
-            property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
-            unknownDevice = 0;
-        }
-        else if (!strncmp(device.c_str(), "le_x2", 5)) {
-            // This is LEX820
-            property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX820");
-            // Dual SIM
-            property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
-            unknownDevice = 0;
-        }
-    }
-    else {
-        LOG(ERROR) << "Unable to read DEVINFO from " << DEVINFO_FILE;
-    }
-
-    if (unknownDevice) {
-        property_override("ro.product.model", "UNKNOWN");
-    }
-}
-
-void init_alarm_boot_properties()
+static void init_alarm_boot_properties()
 {
     char const *boot_reason_file = "/proc/sys/kernel/boot_reason";
     std::string boot_reason;
@@ -221,6 +117,5 @@ void init_alarm_boot_properties()
 
 void vendor_load_properties() {
     LOG(INFO) << "Loading vendor specific properties";
-    init_target_properties();
     init_alarm_boot_properties();
 }
