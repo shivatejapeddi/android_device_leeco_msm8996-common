@@ -65,6 +65,8 @@ on boot
     setprop sys.usb.rndis.func.name "rndis_bam"
     setprop sys.usb.rmnet.func.name "rmnet_bam"
 
+    setprop sys.usb.ffs.aio_compat 1
+
 # Following are the parameters required for usb functionality. They provide configurable options like
 # product_id/vendor id and allows specifying required functions:
 #
