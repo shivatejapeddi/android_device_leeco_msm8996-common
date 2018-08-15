@@ -417,7 +417,8 @@ PRODUCT_PACKAGES += \
 
 # VNDK-SP:
 PRODUCT_PACKAGES += \
-    vndk-sp
+    vndk-sp \
+    libcutils
 
 # VR
 PRODUCT_PACKAGES += \

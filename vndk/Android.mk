@@ -45,6 +45,7 @@ EXTRA_VENDOR_LIBRARIES := \
     android.hidl.allocator@1.0 \
     android.hidl.memory@1.0 \
     libbinder \
+    libcutils \
     libui
 
 HW_VENDOR_LIBRARIES := \
