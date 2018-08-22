@@ -433,3 +433,7 @@ PRODUCT_SYSTEM_PROPERTY_BLACKLIST := \
     ro.product.model
 
 $(call inherit-product, vendor/leeco/msm8996-common/msm8996-common-vendor.mk)
+
+# Enable extra vendor libs
+ENABLE_EXTRA_VENDOR_LIBS := true
+PRODUCT_PACKAGES += vendor-extra-libs
