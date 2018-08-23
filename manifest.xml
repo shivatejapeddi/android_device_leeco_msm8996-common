@@ -240,6 +240,7 @@
             <name>IThermal</name>
             <instance>default</instance>
         </interface>
+        <fqname>@1.0::IGnss/gnss_vendor</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.usb</name>
