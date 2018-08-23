@@ -46,7 +46,28 @@ EXTRA_VENDOR_LIBRARIES := \
     android.hidl.memory@1.0 \
     libbinder \
     libcutils \
-    libui
+    libui \
+    libRSCpuRef \
+    libRSDriver \
+    libRS_internal \
+    libbacktrace \
+    libbase \
+    libbcinfo \
+    libblas \
+    libc++ \
+    libcompiler_rt \
+    libft2 \
+    libhardware \
+    libhidlbase \
+    libhidlmemory \
+    libhidltransport \
+    libhwbinder \
+    libion \
+    liblzma \
+    libpng \
+    libunwind \
+    libutils \
+    libz
 
 HW_VENDOR_LIBRARIES := \
     android.hidl.base@1.0 \
