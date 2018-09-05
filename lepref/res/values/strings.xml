@@ -51,5 +51,7 @@
     <string name="krnl_wl_qcom_rx_title">Block QCOM RX wakelock</string>
     <string name="krnl_wl_qcom_rx_summary">Block QCOM RX wakelock</string>
 
+    <string name="thermalcap_title">Enable to cap frequencies</string>
+    <string name="thermalcap_summary">Caps frequencies as per thermal restrictions</string>
 
 </resources>

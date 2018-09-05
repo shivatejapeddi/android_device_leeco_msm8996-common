@@ -72,3 +72,19 @@ on property:persist.camera.focus_fix=1
 
 on property:persist.camera.focus_fix=0
     write /sys/module/msm_actuator/parameters/use_focus_fix 0
+
+
+
+on property:persist.pm.thermalcap=0
+    write /sys/kernel/msm_thermal/enabled 0
+
+on property:persist.pm.thermalcap=1
+    write /sys/kernel/msm_thermal/enabled 1
+
+# Set thermal restrictions
+    write /sys/kernel/msm_thermal/zone0 "1401600 1478400 40 38"
+    write /sys/kernel/msm_thermal/zone1 "1324800 1478400 42 40"
+    write /sys/kernel/msm_thermal/zone2 "1228800 1401600 43 42"
+    write /sys/kernel/msm_thermal/zone3 "1190400 1324800 57 43"
+    write /sys/kernel/msm_thermal/zone4 "1113600 1190400 60 57"
+    write /sys/kernel/msm_thermal/zone5 "1036800 940800  65 60"

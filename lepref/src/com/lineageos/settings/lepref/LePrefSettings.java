@@ -49,6 +49,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 
     private static final String SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK = "persist.pm.krnl_wl_block";
     private static final String SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX = "persist.pm.krnl_wl_qcom_rx";
+        private static final String SYSTEM_PROPERTY_PM_THERMALCAP = "persist.pm.thermalcap";
 
         private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
@@ -56,6 +57,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 
 	private SwitchPreference mKrnlWlBlock;
 	private SwitchPreference mKrnlWlQcomRX;
+	private SwitchPreference mThermalcap;
 
     private Preference mSaveLog;
 
@@ -93,6 +95,12 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         if( mKrnlWlBlock != null ) {
             mKrnlWlBlock.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK, false));
             mKrnlWlBlock.setOnPreferenceChangeListener(this);
+        }
+
+        mThermalcap = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_THERMALCAP);
+        if( mThermalcap != null ) {
+            mThermalcap.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_THERMALCAP, false));
+            mThermalcap.setOnPreferenceChangeListener(this);
         }
 
         mKrnlWlQcomRX = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX);

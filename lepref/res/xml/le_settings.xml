@@ -53,6 +53,12 @@
             android:title="@string/krnl_wl_qcom_rx_title"
             android:summary="@string/krnl_wl_qcom_rx_summary" />
 
+        <SwitchPreference
+            android:key="persist.pm.thermalcap"
+            android:defaultValue="false"
+            android:title="@string/thermalcap_title"
+            android:summary="@string/thermalcap_summary" />
+
     </PreferenceCategory>
 
 </PreferenceScreen>
