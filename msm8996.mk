@@ -132,8 +132,6 @@ PRODUCT_PACKAGES += \
     android.hardware.camera.provider@2.4-service \
     camera.device@1.0-impl \
     camera.msm8996 \
-    libshims_camera \
-    libshims_qcamera-daemon \
     Snap
 
 PRODUCT_PACKAGES += \
