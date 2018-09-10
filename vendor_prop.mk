@@ -117,6 +117,24 @@ PRODUCT_PROPERTY_OVERRIDES += \
     sdm.debug.disable_rotator_split=1 \
     ro.persist.qcapb=1
 
+#property to specify the number of frames to skip before setting hint
+PRODUCT_PROPERTY_OVERRIDES += \
+    sdm.perf_hint_window=50
+
+#Disable Skip Validate
+PRODUCT_PROPERTY_OVERRIDES += \
+    sdm.debug.disable_skip_validate=1
+
+# Display Properties as per treble compliance
+PRODUCT_PROPERTY_OVERRIDES += \
+    vendor.gralloc.enable_fb_ubwc=1 \
+    vendor.display.disable_skip_validate=1 \
+    vendor.display.perf_hint_window=50
+
+# Property to enable display default color mode
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.vendor.display.cabl=2
+
 # OpenGLES
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.opengles.version=196610
