@@ -70,10 +70,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.bluetooth.wipower=true \
     ro.bluetooth.emb_wp_mode=true
 
-# System property for cabl
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.qualcomm.cabl=2
-
 # Property for vendor specific library
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vendor.gt_library=libqti-gt.so \
@@ -93,14 +89,32 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Data modules
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.data.iwlan.enable=true \
     ro.use_data_netmgrd=true \
     persist.data.netmgrd.qos.enable=true \
     persist.data.mode=concurrent
 
-# GPS
+# Display (Qualcomm Assertive Display)
 PRODUCT_PROPERTY_OVERRIDES += \
-    persist.gps.qc_nlp_in_use=0 \
-    ro.gps.agps_provider=1
+    ro.qualcomm.cabl=2 \
+    ro.qcom.ad=1 \
+    ro.qcom.ad.sensortype=3
+
+# DPM
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.dpm.feature=5
+
+# DRM
+PRODUCT_PROPERTY_OVERRIDES += \
+    drm.service.enabled=true
+
+# Fastcharge
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.sys.le_fast_chrg_enable=1
+
+# FRP
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.frp.pst=/dev/block/bootdevice/by-name/frp
 
 # Graphics
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -134,10 +148,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.min_freq_4=307200 \
     ro.sys.fw.bg_apps_limit=60
 
-# QCOM
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.frp.pst="/dev/block/bootdevice/by-name/frp" \
-    drm.service.enabled=true
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
