@@ -187,6 +187,7 @@ TARGET_USES_MKE2FS := true
 
 # Power
 TARGET_HAS_NO_WIFI_STATS := true
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.msm
 
 # Recovery
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_leeco
