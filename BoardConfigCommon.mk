@@ -193,6 +193,9 @@ BOARD_HAL_STATIC_LIBRARIES := libhealthd.msm
 # Recovery
 TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_leeco
 
+# Sensors
+USE_SENSOR_MULTI_HAL := true
+
 #RECOVERY_VARIANT := twrp
 BOARD_HAS_LARGE_FILESYSTEM := true
 
