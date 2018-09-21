@@ -149,10 +149,10 @@ PRODUCT_PACKAGES += \
     init.qcom.rc \
     init.qcom.sh \
     init.qcom.bt.sh \
-    init.qcom.power.rc \
     init.qcom.usb.rc \
     ueventd.qcom.rc \
-    init.aex.rc
+    init.aex.rc \
+    init.spectrum.rc
 
 
 # Display
@@ -237,7 +237,7 @@ PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
     android.hidl.manager@1.0 \
     android.hidl.manager@1.0-java
-	
+
 # IMS
 PRODUCT_PACKAGES += \
     ims-ext-common
@@ -307,7 +307,7 @@ PRODUCT_PACKAGES += \
     android.hardware.power@1.0-impl \
     android.hardware.power@1.0-service \
     power.qcom
-	
+
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
 

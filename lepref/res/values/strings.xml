@@ -41,15 +41,10 @@
     <string name="camera_focus_fix_title">Autofocus Fix</string>
     <string name="camera_focus_fix_summary">For devices with autofocus problem</string>
 
-
-    <!-- Powersave -->
-    <string name="powersave_settings_title">Power Save</string>
-
-    <string name="krnl_wl_block_title">Kernel wakelock blocker</string>
-    <string name="krnl_wl_block_summary">Enable kernel wakelock blocker</string>
-
-    <string name="krnl_wl_qcom_rx_title">Block QCOM RX wakelock</string>
-    <string name="krnl_wl_qcom_rx_summary">Block QCOM RX wakelock</string>
-
+	<!-- Spectrum Profiles -->
+    <string name="spectrum_profile_title">SPECTRUM Profile</string>
+    <string name="spectrum_title">SPECTRUM Profile</string>
+    <string name="spectrum_summary">Choose your power saver profile</string>
+    <string name="spectrum_dialogTitle">Choose your power saver profile</string>
 
 </resources>
