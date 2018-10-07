@@ -151,7 +151,8 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     ueventd.qcom.rc \
     init.aex.rc \
-    init.spectrum.rc
+    init.spectrum.rc \
+    init.volte.sh
 
 
 # Display

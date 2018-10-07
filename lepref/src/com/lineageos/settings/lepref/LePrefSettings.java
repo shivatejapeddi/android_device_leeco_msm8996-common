@@ -47,13 +47,17 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
 
-    private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
+        private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
+
+
+        private static final String SYSTEM_PROPERTY_VOLTE_FIX = "persist.volte.fix";
 
         private Preference mKcalPref;
         private ListPreference mSPECTRUM;
 	private SwitchPreference mEnableQC;
-	private SwitchPreference mCameraFocusFix;
-        private Preference mSaveLog;
+        private SwitchPreference mCameraFocusFix;
+	private SwitchPreference mVolteFix;
+       private Preference mSaveLog;
 
     private Context mContext;
     private SharedPreferences mPreferences;
@@ -72,7 +76,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
                      }
                 });
         mContext = getApplicationContext();
- 
+
         mEnableQC = (SwitchPreference) findPreference(QC_SYSTEM_PROPERTY);
         if( mEnableQC != null ) {
             mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
@@ -83,6 +87,12 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         if( mCameraFocusFix != null ) {
             mCameraFocusFix.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_CAMERA_FOCUS_FIX, false));
             mCameraFocusFix.setOnPreferenceChangeListener(this);
+        }
+
+        mVolteFix = (SwitchPreference) findPreference(SYSTEM_PROPERTY_VOLTE_FIX);
+        if( mVolteFix != null ) {
+            mVolteFix.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_VOLTE_FIX, false));
+            mVolteFix.setOnPreferenceChangeListener(this);
         }
 
         mSPECTRUM = (ListPreference) findPreference(SPECTRUM_KEY);
@@ -97,7 +107,6 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
     private void setSPECTRUM(String value) {
 		SystemProperties.set(SPECTRUM_SYSTEM_PROPERTY, value);
     }
-   
 
     private void setEnable(String key, boolean value) {
 	if(value) {

@@ -41,6 +41,11 @@
     <string name="camera_focus_fix_title">Autofocus Fix</string>
     <string name="camera_focus_fix_summary">For devices with autofocus problem</string>
 
+    <!-- Volte -->
+    <string name="volte_pref_title">VoLTE Hack</string>
+    <string name="volte_fix_title">Enable VoLTE</string>
+    <string name="volte_fix_summary">requires reboot,sim settings resets after every reboot</string>
+
 	<!-- Spectrum Profiles -->
     <string name="spectrum_profile_title">SPECTRUM Profile</string>
     <string name="spectrum_title">SPECTRUM Profile</string>
