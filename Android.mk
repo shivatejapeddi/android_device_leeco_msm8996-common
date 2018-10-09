@@ -57,11 +57,9 @@ ALL_DEFAULT_INSTALLED_MODULES += $(GOODIXFP_SYMLINKS)
 FIRMWARE_MOUNT_POINT := $(TARGET_OUT_VENDOR)/firmware_mnt
 BT_FIRMWARE_MOUNT_POINT := $(TARGET_OUT_VENDOR)/bt_firmware
 DSP_MOUNT_POINT := $(TARGET_OUT_VENDOR)/dsp
-PERSIST_MOUNT_POINT := $(TARGET_ROOT_OUT)/persist
 ALL_DEFAULT_INSTALLED_MODULES += $(FIRMWARE_MOUNT_POINT) \
 				 $(BT_FIRMWARE_MOUNT_POINT) \
-				 $(DSP_MOUNT_POINT) \
-				 $(PERSIST_MOUNT_POINT)
+				 $(DSP_MOUNT_POINT)
 $(FIRMWARE_MOUNT_POINT):
 	@echo "Creating $(FIRMWARE_MOUNT_POINT)"
 	@mkdir -p $(TARGET_OUT_VENDOR)/firmware_mnt
@@ -73,12 +71,6 @@ $(BT_FIRMWARE_MOUNT_POINT):
 $(DSP_MOUNT_POINT):
 	@echo "Creating $(DSP_MOUNT_POINT)"
 	@mkdir -p $(TARGET_OUT_VENDOR)/dsp
-
-$(PERSIST_MOUNT_POINT):
-	@echo "Creating $(PERSIST_MOUNT_POINT)"
-ifneq ($(TARGET_MOUNT_POINTS_SYMLINKS),false)
-	@ln -sf /mnt/vendor/persist $(TARGET_ROOT_OUT)/persist
-endif
 
 IMS_LIBS := libimscamera_jni.so libimsmedia_jni.so
 IMS_SYMLINKS := $(addprefix $(TARGET_OUT_VENDOR_APPS)/ims/lib/arm64/,$(notdir $(IMS_LIBS)))
