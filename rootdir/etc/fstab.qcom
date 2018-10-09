@@ -21,5 +21,6 @@
 /dev/block/zram0                                             none              swap    defaults                                                                zramsize=536870912,max_comp_streams=4
 /dev/block/bootdevice/by-name/frp                            /frp              emmc    defaults                                                                                             defaults
 
+/mnt/vendor/persist                                          /persist          none    bind                                                                    wait
 
 /devices/*/xhci-hcd.0.auto/usb*                              auto              auto    defaults                                                                voldmanaged=usb:auto
