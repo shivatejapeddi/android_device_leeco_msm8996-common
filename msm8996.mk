@@ -224,6 +224,14 @@ PRODUCT_PACKAGES += \
     android.hardware.health@2.0-service \
     libhealthd.msm
 
+# Healthd packages
+PRODUCT_PACKAGES += \
+    charger_res_images \
+
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/charger/charger:$(TARGET_COPY_OUT_VENDOR)/bin/charger \
+
+
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \

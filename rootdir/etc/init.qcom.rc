@@ -984,7 +984,7 @@ service hvdcp_opti /vendor/bin/hvdcp_opti
     user root
     group root
 
-service charger /charger
+service charger /vendor/bin/charger
     class charger
     group system graphics log
     writepid /dev/cpuset/system-background/tasks
