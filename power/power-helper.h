@@ -1,9 +1,10 @@
-/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+/*
+ * Copyright (c) 2017, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- *     * Redistributions of source code must retain the above copyright
+ * *    * Redistributions of source code must retain the above copyright
  *       notice, this list of conditions and the following disclaimer.
  *     * Redistributions in binary form must reproduce the above
  *       copyright notice, this list of conditions and the following
@@ -24,25 +25,58 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
  */
+#ifndef __POWER_HELPER_H__
+#define __POWER_HELPER_H__
 
-#ifndef __POWERHINTPARSER__
-#define __POWERHINTPARSER__
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#define POWERHINT_XML      "/vendor/etc/powerhint.xml"
-#define MAX_HINT 6
-#define MAX_PARAM 30
+#include <hardware/power.h>
 
-typedef struct perflock_param_t {
-    int type;
-    int numParams;
-    int paramList[MAX_PARAM];//static limit on number of hints - 15
-}perflock_param_t;
+enum stats_type {
+    //Platform Stats
+    RPM_MODE_XO = 0,
+    RPM_MODE_VMIN,
+    RPM_MODE_MAX,
+    XO_VOTERS_START = RPM_MODE_MAX,
+    VOTER_APSS = XO_VOTERS_START,
+    VOTER_MPSS,
+    VOTER_ADSP,
+    VOTER_SLPI,
+    VOTER_PRONTO,
+    VOTER_TZ,
+    VOTER_LPASS,
+    VOTER_SPSS,
+    MAX_PLATFORM_STATS,
+};
 
-static perflock_param_t powerhint[MAX_HINT];
+enum subsystem_type {
+    //Don't add any lines after this line
+    SUBSYSTEM_COUNT
+};
 
-int parsePowerhintXML();
-int *getPowerhint(int, int*);
+#define PLATFORM_SLEEP_MODES_COUNT RPM_MODE_MAX
 
-#endif /* __POWERHINTPARSER__ */
+#define MAX_RPM_PARAMS 2
+#define XO_VOTERS (MAX_PLATFORM_STATS - XO_VOTERS_START)
+#define VMIN_VOTERS 0
+
+struct stat_pair {
+    enum stats_type stat;
+    const char *label;
+    const char **parameters;
+    size_t num_parameters;
+};
+
+void power_init(void);
+void power_hint(power_hint_t hint, void *data);
+void power_set_interactive(int on);
+int extract_platform_stats(uint64_t *list);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //__POWER_HELPER_H__

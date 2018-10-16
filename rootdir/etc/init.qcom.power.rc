@@ -79,7 +79,7 @@ on enable-low-power
     write /proc/sys/kernel/sched_wakeup_load_threshold 110
     write /proc/sys/kernel/sched_small_wakee_task_load 15
 
-    setprop sys.io.scheduler "bfq"
+    setprop sys.io.scheduler "cfq"
 
     # VM
     write /proc/sys/vm/dirty_background_ratio 20
@@ -124,6 +124,8 @@ on property:sys.boot_completed=1
     write /sys/devices/soc/${ro.boot.bootdevice}/${ro.boot.bootdevice}:ufs_variant/pm_qos_enable 1
     write /sys/module/lpm_levels/parameters/sleep_disabled N	
 	
+    setprop sys.io.scheduler "cfq"
+
 on property:init.svc.recovery=running
     trigger enable-low-power
 

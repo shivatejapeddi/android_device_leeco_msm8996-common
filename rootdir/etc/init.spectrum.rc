@@ -11,16 +11,33 @@ service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.
     disabled
     writepid /dev/cpuset/system-background/tasks
 
+    #Create IOP  deamon related dirs
+    mkdir /data/misc/iop 0770 root system
+
+service iop /vendor/bin/iop
+    class main
+    user root
+    group root
+    disabled
+    socket iop seqpacket 0666 root system
+    writepid /dev/cpuset/system-background/tasks
+
+service energy-awareness /vendor/bin/energy-awareness
+    class main
+    user root
+    group system
+    oneshot
+
 #Spectrum Initialization
 on property:sys.boot_completed=1
-   start msm_irqbalance
+   start iop
    start energy-awareness
+   start msm_irqbalance
    start thermal-engine
    # Enable Spectrum support
    setprop spectrum.support 1
    # Add kernel name
    setprop persist.spectrum.kernel Aex
-
 
 # Balance (default profile)
 on property:persist.spectrum.profile=0
@@ -326,6 +343,3 @@ on property:persist.spectrum.profile=3
     start perfd
     start thermal-engine
     trigger enable-low-power
-
-
-
