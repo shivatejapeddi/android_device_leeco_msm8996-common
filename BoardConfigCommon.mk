@@ -61,6 +61,7 @@ BOARD_USES_QCOM_HARDWARE := true
 # Properties
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED := true
 PRODUCT_FULL_TREBLE_OVERRIDE := true
+PRODUCT_VENDOR_MOVE_ENABLED := true
 
 # ANT+
 BOARD_ANT_WIRELESS_DEVICE := "qualcomm-hidl"
@@ -120,6 +121,7 @@ BOARD_CHARGER_DISABLE_INIT_BLANK := true
 BOARD_HEALTHD_CUSTOM_CHARGER_RES := $(PLATFORM_PATH)/charger/images
 # Before enabling lineage charger you have to fix it!
 WITH_LINEAGE_CHARGER := false
+BOARD_HAL_STATIC_LIBRARIES := libhealthd.msm
 
 # Init
 TARGET_INIT_VENDOR_LIB := libinit_leeco_msm8996
