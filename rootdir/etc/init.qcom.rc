@@ -917,6 +917,11 @@ on property:crypto.driver.load=1
     insmod /system/lib/modules/qce.ko
     insmod /system/lib/modules/qcedev.ko
 
+service uei-sh /vendor/bin/init.uei.sh
+    class main
+    user root
+    group root
+
 service atfwd /vendor/bin/ATFWD-daemon
     class late_start
     user system

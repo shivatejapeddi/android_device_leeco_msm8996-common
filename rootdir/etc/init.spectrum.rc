@@ -12,13 +12,49 @@ on property:sys.boot_completed=1
 # Balance (default profile)
 on property:persist.spectrum.profile=0
 
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 250
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 1250
+
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 250
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 1250
+	
     # Set Balance power settings
-    write /sys/devices/system/cpu/cpu3/online 1
     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
 
+    # Set Boosts
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /sys/module/cpu_boost/parameters/input_boost_ms 1500	
+    write /sys/module/cpu_boost/parameters/dynamic_stune_boost 1
+    write /dev/stune/top-app/schedtune.sched_boost 15
+    write /sys/module/msm_performance/parameters/touch_boost 0
+
     write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 940800
     write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 556800
+
+    # Devfreq Settings
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,cpubw/polling_interval 50
+    write /sys/class/devfreq/soc:qcom,cpubw/min_freq 762
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/mbps_zones "1525 5195 11863 13763"
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/sample_ms 4
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_length 10
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_ceil_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_delay 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/guard_band_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/up_scale 250
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/idle_mbps 1600
+
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"	
 
     # Set normal thermal restrictions
     write /sys/kernel/msm_thermal/enabled 0
@@ -39,15 +75,51 @@ on property:persist.spectrum.profile=0
 
 # Performance
 on property:persist.spectrum.profile=1
+    # Governor Tweaks
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 250
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 4000
 
-     # Set high performance settings
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 250
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 4000
 
-    write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 940800
-    write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 556800
+    # Set Boosts
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /sys/module/cpu_boost/parameters/input_boost_ms 1500
+    write /sys/module/cpu_boost/parameters/dynamic_stune_boost 35
+    write /dev/stune/top-app/schedtune.boost 35
+    write /dev/stune/top-app/schedtune.sched_boost 35
+    write /sys/module/msm_performance/parameters/touch_boost 1
+
+    write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 1190400
+    write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 1324800
 
     write /sys/class/devfreq/soc:qcom,cpubw/governor "performance"
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "performance"
 
+    # Enable bus-dcvs
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,cpubw/polling_interval 50
+    write /sys/class/devfreq/soc:qcom,cpubw/min_freq 1525
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/mbps_zones "1525 5195 11863 13763"
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/sample_ms 4
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_length 10
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_ceil_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_delay 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/guard_band_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/up_scale 250
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/idle_mbps 1600
+
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"
+	
     write /sys/kernel/msm_thermal/enabled 0
     write /sys/kernel/msm_thermal/zone0 "1401600 1708800 45 43"
     write /sys/kernel/msm_thermal/zone1 "1324800 1555200 49 47"
@@ -61,6 +133,22 @@ on property:persist.spectrum.profile=1
 
 # Battery
 on property:persist.spectrum.profile=2
+    # Governor Tweaks
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 1000
+
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 5000
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 250
+
+    # Set Boosts
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /sys/module/cpu_boost/parameters/input_boost_ms 850
+    write /sys/module/cpu_boost/parameters/dynamic_stune_boost 10
+    write /dev/stune/top-app/schedtune.boost 10
+    write /dev/stune/top-app/schedtune.sched_boost 10
+    write /sys/module/msm_performance/parameters/touch_boost 0
 
     # Set low-power performance settings
     write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 480000
@@ -69,34 +157,88 @@ on property:persist.spectrum.profile=2
     write /sys/class/devfreq/soc:qcom,cpubw/governor "powersave"
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor  "powersave"
 
+    # Devfreq Settings
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,cpubw/polling_interval 50
+    write /sys/class/devfreq/soc:qcom,cpubw/min_freq 762
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/mbps_zones "1525 5195 11863 13763"
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/sample_ms 4
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_length 10
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_ceil_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_delay 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/guard_band_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/up_scale 250
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/idle_mbps 1600
+
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"	
+
     write /sys/kernel/msm_thermal/enabled 0
-    write /sys/kernel/msm_thermal/zone0 "1401600 1785600 40 38"
-    write /sys/kernel/msm_thermal/zone1 "1324800 1555200 41 40"
-    write /sys/kernel/msm_thermal/zone2 "1228800 1478400 42 41"
-    write /sys/kernel/msm_thermal/zone3 "1228800 1401600 43 42"
-    write /sys/kernel/msm_thermal/zone4 "1190400 1324800 44 43"
-    write /sys/kernel/msm_thermal/zone5 "1190400 1248000 46 44"
-    write /sys/kernel/msm_thermal/zone6 "1113600 1190400 48 46"
-    write /sys/kernel/msm_thermal/zone7 "1036800 940800 53 50"
-    write /sys/kernel/msm_thermal/zone8 "729600 729600 65 60"
+    write /sys/kernel/msm_thermal/zone0 "1401600 1555200 38 36"
+    write /sys/kernel/msm_thermal/zone1 "1324800 1478400 40 38"
+    write /sys/kernel/msm_thermal/zone2 "1228800 1401600 44 40"
+    write /sys/kernel/msm_thermal/zone3 "1190400 1324800 50 44"
+    write /sys/kernel/msm_thermal/zone4 "1113600 1190400 55 50"
+    write /sys/kernel/msm_thermal/zone5 "960000 940800  60 55"
     write /sys/kernel/msm_thermal/sampling_ms 5000
     write /sys/kernel/msm_thermal/enabled 1
-
     start perfd
-    start thermal-engine
+	start thermal-engine
     trigger enable-low-power
 
 	# Gaming
 on property:persist.spectrum.profile=3
-    # Add configs here
-     # Set high performance settings
+    # Governor Tweaks
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 250
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 2000
+
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "schedutil"
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/up_rate_limit_us 250
+    write /sys/devices/system/cpu/cpu2/cpufreq/schedutil/down_rate_limit_us 2000
+
+    # Set Boosts
+    write /dev/stune/top-app/schedtune.prefer_idle 1
+    write /sys/module/cpu_boost/parameters/input_boost_ms 1500
+    write /sys/module/cpu_boost/parameters/dynamic_stune_boost 20
+    write /dev/stune/top-app/schedtune.boost 20
+    write /dev/stune/top-app/schedtune.sched_boost 20
+    write /sys/module/msm_performance/parameters/touch_boost 1
 
     write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 940800
     write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 556800
-
+	
     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
     stop thermal-engine
+
+    # Devfreq Settings
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,cpubw/polling_interval 50
+    write /sys/class/devfreq/soc:qcom,cpubw/min_freq 762
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/mbps_zones "1525 5195 11863 13763"
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/sample_ms 4
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/io_percent 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hist_memory 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/hyst_length 10
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_ceil_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_io_percent 34
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/low_power_delay 20
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/guard_band_mbps 0
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/up_scale 250
+    write /sys/class/devfreq/soc:qcom,cpubw/bw_hwmon/idle_mbps 1600
+
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/polling_interval 10
+    write /sys/class/devfreq/soc:qcom,mincpubw/governor "cpufreq"
 
     write /sys/kernel/msm_thermal/enabled 0
     write /sys/kernel/msm_thermal/zone0 "1401600 1785600 46 41"
@@ -112,3 +254,4 @@ on property:persist.spectrum.profile=3
     write /sys/kernel/msm_thermal/enabled 1
     start perfd
     trigger enable-low-power
+
