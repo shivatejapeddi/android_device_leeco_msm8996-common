@@ -111,7 +111,6 @@ QCOM_BT_USE_SMD_TTY := true
 USE_DEVICE_SPECIFIC_CAMERA := true
 DEVICE_SPECIFIC_CAMERA_PATH := $(PLATFORM_PATH)/camera
 TARGET_SUPPORT_HAL1 := true
-USE_DISPLAY_SERVICE := true
 TARGET_USES_MEDIA_EXTENSIONS := true
 TARGET_USES_QTI_CAMERA2CLIENT := true
 BOARD_QTI_CAMERA_32BIT_ONLY := true
@@ -255,7 +254,7 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
 TARGET_RIL_VARIANT := caf
 
 # SELinux
-#include device/qcom/sepolicy/sepolicy.mk
+include device/qcom/sepolicy/sepolicy.mk
 #BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
 
 -include vendor/leeco/msm8996-common/BoardConfigVendor.mk
