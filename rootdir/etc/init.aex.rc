@@ -37,6 +37,7 @@ on boot
     chmod 0666 /sys/devices/soc/soc:qcom,camera-flash/flashled2
 
 
+
 # cpuidle use deepest state
 on property:persist.pm.cpuidle_ds=1
     write /sys/module/cpuidle/parameters/use_deepest_state 1

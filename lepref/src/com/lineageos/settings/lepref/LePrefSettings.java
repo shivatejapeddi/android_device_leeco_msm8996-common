@@ -47,9 +47,11 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
 
-    private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
+        private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
+        private static final String SYSTEM_PROPERTY_PM_DEEP_IDLE = "persist.pm.deep_idle";
 
         private Preference mKcalPref;
+	private SwitchPreference mDeepIdle;
         private ListPreference mSPECTRUM;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mCameraFocusFix;
@@ -72,7 +74,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
                      }
                 });
         mContext = getApplicationContext();
- 
+
         mEnableQC = (SwitchPreference) findPreference(QC_SYSTEM_PROPERTY);
         if( mEnableQC != null ) {
             mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
@@ -83,6 +85,12 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         if( mCameraFocusFix != null ) {
             mCameraFocusFix.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_CAMERA_FOCUS_FIX, false));
             mCameraFocusFix.setOnPreferenceChangeListener(this);
+        }
+
+        mDeepIdle = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_DEEP_IDLE);
+        if( mDeepIdle != null ) {
+            mDeepIdle.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_DEEP_IDLE, false));
+            mDeepIdle.setOnPreferenceChangeListener(this);
         }
 
         mSPECTRUM = (ListPreference) findPreference(SPECTRUM_KEY);
@@ -97,7 +105,6 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
     private void setSPECTRUM(String value) {
 		SystemProperties.set(SPECTRUM_SYSTEM_PROPERTY, value);
     }
-   
 
     private void setEnable(String key, boolean value) {
 	if(value) {

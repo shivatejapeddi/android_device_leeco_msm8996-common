@@ -47,4 +47,9 @@
     <string name="spectrum_summary">Choose your power saver profile</string>
     <string name="spectrum_dialogTitle">Choose your power saver profile</string>
 
+    <!-- Powersave -->
+    <string name="powersave_settings_title">Power Save</string>
+    <string name="deep_idle_title">Aggressive Idle Mode</string>
+    <string name="deep_idle_summary">Deep Idle immediately after screen off</string>
+
 </resources>

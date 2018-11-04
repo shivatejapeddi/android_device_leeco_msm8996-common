@@ -52,4 +52,15 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="powersave"
+        android:title="@string/powersave_settings_title" >
+
+        <SwitchPreference
+            android:key="persist.pm.deep_idle"
+            android:defaultValue="false"
+            android:title="@string/deep_idle_title"
+            android:summary="@string/deep_idle_summary" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
