@@ -185,8 +185,8 @@ PRODUCT_PACKAGES += \
     vendor.display.config@1.1_vendor
 
 # Doze mode
-#PRODUCT_PACKAGES += \
-#    Doze
+PRODUCT_PACKAGES += \
+    LeecoDoze
 
 # DRM
 PRODUCT_PACKAGES += \
