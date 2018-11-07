@@ -34,7 +34,7 @@
     <!-- Battery -->
     <string name="battery_settings_title">Battery</string>
     <string name="qc_title">Quick Charge</string>
-    <string name="qc_summary">Enable/disable quick charge settings</string>
+    <string name="qc_summary">Requires Disconnect and Reconnect of charger after Enable/disable</string>
 
     <!-- Camera -->
     <string name="camera_pref_title">Camera</string>
@@ -44,12 +44,5 @@
 
     <!-- Powersave -->
     <string name="powersave_settings_title">Power Save</string>
-
-    <string name="krnl_wl_block_title">Kernel wakelock blocker</string>
-    <string name="krnl_wl_block_summary">Enable kernel wakelock blocker</string>
-
-    <string name="krnl_wl_qcom_rx_title">Block QCOM RX wakelock</string>
-    <string name="krnl_wl_qcom_rx_summary">Block QCOM RX wakelock</string>
-
 
 </resources>
