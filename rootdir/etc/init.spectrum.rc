@@ -2,12 +2,37 @@
 # Ramdisk file for profile based kernel management
 # Implimentation inspired by Franco's fku profiles
 
-    start perfd
-    start thermal-engine
-    trigger enable-low-power
+on boot
+
+service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.conf
+    class main
+    user root
+    group root
+    disabled
+    writepid /dev/cpuset/system-background/tasks
+
+    #Create IOP  deamon related dirs
+    mkdir /data/misc/iop 0770 root system
+
+service iop /vendor/bin/iop
+    class main
+    user root
+    group root
+    disabled
+    socket iop seqpacket 0666 root system
+    writepid /dev/cpuset/system-background/tasks
+
+service energy-awareness /vendor/bin/energy-awareness
+    class main
+    user root
+    group system
+    oneshot
 
 #Spectrum Initialization
 on property:sys.boot_completed=1
+   start iop
+   start energy-awareness
+   start msm_irqbalance
    # Enable Spectrum support
    setprop spectrum.support 1
    # Add kernel name
