@@ -34,7 +34,7 @@
     <!-- Battery -->
     <string name="battery_settings_title">Battery</string>
     <string name="qc_title">Quick Charge</string>
-    <string name="qc_summary">Enable/disable quick charge settings</string>
+    <string name="qc_summary">Requires Disconnect and Reconnect of charger after Enable/disable</string>
 
     <!-- Camera -->
     <string name="camera_pref_title">Camera</string>
@@ -49,7 +49,7 @@
 
     <!-- Powersave -->
     <string name="powersave_settings_title">Power Save</string>
-    <string name="deep_idle_title">Aggressive Idle Mode</string>
+    <string name="deep_idle_title">Idle Mode</string>
     <string name="deep_idle_summary">Deep Idle immediately after screen off</string>
 
 </resources>
