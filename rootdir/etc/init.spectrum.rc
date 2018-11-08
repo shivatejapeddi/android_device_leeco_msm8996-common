@@ -196,8 +196,8 @@ on property:persist.spectrum.profile=1
 on property:persist.spectrum.profile=2
 
     # Set low-power performance settings
-     write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 556800
-     write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 556800
+     write /sys/module/cpu_input_boost/parameters/input_boost_freq_hp 307200
+     write /sys/module/cpu_input_boost/parameters/input_boost_freq_lp 307200
 
      write /sys/class/devfreq/soc:qcom,cpubw/governor "powersave"
      write /sys/class/kgsl/kgsl-3d0/devfreq/governor  "powersave"
