@@ -433,9 +433,12 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=adb \
     ro.adb.secure=0
 
-# Create a symlink for libcppf.so and liboemcrypto.so which expects the cppf firmware at
-# /system/etc/firmware to be able to move cppf firmware (via hex edit) to /vendor a link 
-# /vendor/firmware/drm is created, which points to /vendor/firmware
+# Symlinks
+BOARD_ROOT_EXTRA_SYMLINKS := \
+    /vendor/dsp:/dsp \
+    /vendor/firmware_mnt:/firmware \
+    /vendor/bt_firmware:/bt_firmware
+
 BOARD_VENDOR_EXTRA_SYMLINKS += \
     /vendor/firmware:/firmware/drm
 
