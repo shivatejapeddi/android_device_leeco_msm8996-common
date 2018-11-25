@@ -407,11 +407,6 @@ PRODUCT_PACKAGES += \
     android.hardware.vr@1.0-service \
     vr.msm8996
 
-# Preloading QPerformance jar to ensure faster perflocks in Boost Framework
-PRODUCT_BOOT_JARS += QPerformance
-
-# Preloading UxPerformance jar to ensure faster UX invoke in Boost Framework
-PRODUCT_BOOT_JARS += UxPerformance
 
 # WiFi
 PRODUCT_PACKAGES += \
