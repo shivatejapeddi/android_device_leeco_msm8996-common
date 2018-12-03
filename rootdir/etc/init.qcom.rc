@@ -369,6 +369,7 @@ on early-boot
     write /sys/kernel/boot_adsp/boot 1
     write /sys/kernel/boot_cdsp/boot 1
     write /sys/kernel/boot_slpi/boot 1
+<<<<<<< HEAD:rootdir/etc/init.qcom.rc
 	
     # for backward compatibility
     chown system system /persist/sensors
@@ -389,6 +390,9 @@ on early-boot
     chown system system /mnt/vendor/persist/sensors/registry/sns_reg_config
     chown system system /mnt/vendor/persist/sensors/registry/config
     chmod 0664 /mnt/vendor/persist/sensors/sensors_settings
+=======
+    chown root audio /sys/kernel/boot_adsp/boot
+>>>>>>> 43c110e... msm8996: add audio group to /sys/kernel/boot_adsp/boot:prebuilt/vendor/etc/init/hw/init.qcom.rc
 
 on boot
     # Secure touch
