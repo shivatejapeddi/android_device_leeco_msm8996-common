@@ -205,14 +205,7 @@ on post-fs-data
     mkdir /data/vendor/connectivity 0771 radio radio
     chown radio radio /data/vendor/connectivity
 
-    # Create the directories used by DPM subsystem
-    mkdir /data/dpm 0771 system system
-    chown system system /data/dpm
-
-    mkdir /data/dpm/nsrm 0771 system system
-    chown system system /data/dpm/nsrm
-
-    # Create the directories used by the audio subsystem
+    #create the directories used by the audio subsystem
     mkdir /data/vendor/audio/ 0770 media audio
     mkdir /data/vendor/misc/audio 0770 audio audio
     # legacy
