@@ -42,20 +42,15 @@ import com.lineageos.settings.lepref.R;
 public class LePrefSettings extends PreferenceActivity implements OnPreferenceChangeListener {
 	private static final boolean DEBUG = false;
 	private static final String TAG = "LePref";
+	private static final String SPECTRUM_KEY = "spectrum";
+	private static final String SPECTRUM_SYSTEM_PROPERTY = "persist.spectrum.profile";
 
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
 
     private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
-
-    private static final String SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK = "persist.pm.krnl_wl_block";
-    private static final String SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX = "persist.pm.krnl_wl_qcom_rx";
-
         private Preference mKcalPref;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mCameraFocusFix;
-
-	private SwitchPreference mKrnlWlBlock;
-	private SwitchPreference mKrnlWlQcomRX;
 
     private Preference mSaveLog;
 
@@ -76,7 +71,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
                      }
                 });
         mContext = getApplicationContext();
- 
+
         mEnableQC = (SwitchPreference) findPreference(QC_SYSTEM_PROPERTY);
         if( mEnableQC != null ) {
             mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
@@ -89,23 +84,22 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
             mCameraFocusFix.setOnPreferenceChangeListener(this);
         }
 
-        mKrnlWlBlock = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK);
-        if( mKrnlWlBlock != null ) {
-            mKrnlWlBlock.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_BLOCK, false));
-            mKrnlWlBlock.setOnPreferenceChangeListener(this);
-        }
-
-        mKrnlWlQcomRX = (SwitchPreference) findPreference(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX);
-        if( mKrnlWlQcomRX != null ) {
-            mKrnlWlQcomRX.setChecked(SystemProperties.getBoolean(SYSTEM_PROPERTY_PM_KRNL_WL_QCOM_RX, false));
-            mKrnlWlQcomRX.setOnPreferenceChangeListener(this);
+        mSPECTRUM = (ListPreference) findPreference(SPECTRUM_KEY);
+        if( mSPECTRUM != null ) {
+            mSPECTRUM.setValue(SystemProperties.get(SPECTRUM_SYSTEM_PROPERTY, "0"));
+            mSPECTRUM.setOnPreferenceChangeListener(this);
         }
 
 }
 
+    // Set SPECTRUM
+    private void setSPECTRUM(String value) {
+		SystemProperties.set(SPECTRUM_SYSTEM_PROPERTY, value);
+    }
+
     private void setEnable(String key, boolean value) {
-	    if(value) {
-		    SystemProperties.set(key, "1");
+	if(value) {
+ 	      SystemProperties.set(key, "1");
     	} else {
     		SystemProperties.set(key, "0");
     	}
@@ -132,10 +126,17 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         boolean value;
         String strvalue;
         if (DEBUG) Log.d(TAG, "Preference changed.");
+	if (SPECTRUM_KEY.equals(key)) {
+		strvalue = (String) newValue;
+		if (DEBUG) Log.d(TAG, "SPECTRUM setting changed: " + strvalue);
+		setSPECTRUM(strvalue);
+		return true;
+	} else {
 
     	value = (Boolean) newValue;
     	((SwitchPreference)preference).setChecked(value);
     	setEnable(key,value);
-    	return true;
+	return true;
+	}
     }
 }
