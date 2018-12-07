@@ -190,7 +190,7 @@ ifeq ($(HOST_OS),linux)
 endif
 
 # Filesystem
-TARGET_FS_CONFIG_GEN += $(PLATFORM_PATH)/config.fs
+TARGET_FS_CONFIG_GEN := $(PLATFORM_PATH)/config.fs
 
 # GPS
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := msm8996
