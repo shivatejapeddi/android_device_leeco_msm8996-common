@@ -19,7 +19,7 @@
 set -e
 
 # Required!
-DEVICE_COMMON=msm8996-common
+DEVICE_COMMON=msm8996
 VENDOR=leeco
 
 # Load extractutils and do some sanity checks
@@ -28,7 +28,7 @@ if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
 LINEAGE_ROOT="$MY_DIR"/../../..
 
-HELPER="$LINEAGE_ROOT"/vendor/lineage/build/tools/extract_utils.sh
+HELPER="$LINEAGE_ROOT"/vendor/aosp/build/tools/extract_utils.sh
 if [ ! -f "$HELPER" ]; then
     echo "Unable to find helper script at $HELPER"
     exit 1
@@ -43,9 +43,6 @@ write_headers "zl1 x2"
 
 # Common QC blobs
 write_makefiles "$MY_DIR"/proprietary-files-qc.txt
-
-# QC Perf blobs
-write_makefiles "$MY_DIR"/proprietary-files-qc-perf.txt
 
 # We are done with common
 write_footers

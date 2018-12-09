@@ -18,7 +18,7 @@
 
 set -e
 
-DEVICE_COMMON=msm8996-common
+DEVICE_COMMON=msm8996
 VENDOR=leeco
 
 # Load extractutils and do some sanity checks

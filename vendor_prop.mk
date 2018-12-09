@@ -67,7 +67,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
     bt.max.hfpclient.connections=1 \
-    qcom.bluetooth.soc=rome \
+    vendor.qcom.bluetooth.soc=rome \
     ro.bluetooth.ftm_enabled=true \
     ro.bluetooth.wipower=true \
     ro.bluetooth.emb_wp_mode=true
@@ -91,6 +91,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # CNE
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.cne.feature=1 \
     persist.cne.feature=1
 
 # Data modules
@@ -228,3 +229,14 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.VT_HYBRID_ENABLE=1 \
     persist.dbg.wfc_avail_ovr=1 \
     persist.pm.krnl_wl_block=1
+
+#WFD
+PRODUCT_PROPERTY_OVERRIDES += \
+    debug.sf.enable_hwc_vds=1
+
+#QTI Performance
+PRODUCT_PROPERTY_OVERRIDES += \
+    vendor.iop.enable_uxe=1 \
+    vendor.perf.iop_v3.enable=1 \
+    ro.vendor.at_library=libqti-at.so \
+    persist.vendor.qti.games.gt.prof=1

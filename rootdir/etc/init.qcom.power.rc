@@ -1,3 +1,5 @@
+import /vendor/etc/init/hw/init.spectrum.rc
+
 on init
     # Disable UFS powersaving
     write /sys/devices/soc/${ro.boot.bootdevice}/clkscale_enable 0
@@ -30,7 +32,6 @@ on boot
     chown system system /dev/cpuset/camera-daemon
     chown system system /dev/cpuset/camera-daemon/tasks
     chmod 0664 /dev/cpuset/camera-daemon/tasks
-
 
 on enable-low-power
 
@@ -73,6 +74,10 @@ on enable-low-power
     write /proc/sys/kernel/sched_freq_dec_notify 400000
     write /proc/sys/kernel/sched_spill_nr_run 3
     write /proc/sys/kernel/sched_init_task_load 100	
+    write /proc/sys/kernel/sched_big_waker_task_load 50
+    write /proc/sys/kernel/sched_small_task 15
+    write /proc/sys/kernel/sched_wakeup_load_threshold 110
+    write /proc/sys/kernel/sched_small_wakee_task_load 15
 
     setprop sys.io.scheduler "bfq"
 
@@ -95,10 +100,10 @@ on enable-low-power
     write /sys/module/msm_thermal/core_control/enabled 1
 
     # update cpusets now that boot is complete and we want better load balancing
-    write /dev/cpuset/top-app/cpus 0-3
-    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-1
     write /dev/cpuset/background/cpus 0
-    write /dev/cpuset/system-background/cpus 0-2
+    write /dev/cpuset/system-background/cpus 0-1
 
 on charger
     write /sys/devices/system/cpu/cpu1/online 0
@@ -122,3 +127,99 @@ on property:sys.boot_completed=1
 on property:init.svc.recovery=running
     trigger enable-low-power
 
+
+on state-asleep
+    write /dev/cpuset/top-app/cpus 0
+    write /dev/cpuset/foreground/cpus 0
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 307200
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 307200
+    #write /sys/class/devfreq/soc:qcom,cpubw/governor "powersave"
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor  "powersave"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "powersave"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "powersave"
+
+on state-awake
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-1
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-1
+    #write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+
+on state-background
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/background/cpus 0-2
+    write /dev/cpuset/system-background/cpus 0-1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 307200
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 307200
+    #write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+
+on state-backgroun
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-1
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 307200
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 307200
+    #write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+	
+on state-backgrou
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/background/cpus 0-2
+    write /dev/cpuset/system-background/cpus 0-1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 940800
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 940800
+    #write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu0/governor "mem_latency"
+    write /sys/class/devfreq/soc:qcom,memlat-cpu2/governor "mem_latency"
+	
+on state-backgro	
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-3
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 940800
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 940800	
+	
+on property:power.wakefulness=1
+    trigger state-awake
+
+on property:power.wakefulness=0 && property:power.wake_lock=0
+    trigger state-asleep
+
+on property:power.wakefulness=0 && property:power.wake_lock=1
+    trigger state-background
+
+on property:power.wakefulness=2 && property:power.wake_lock=0
+    trigger state-asleep
+
+on property:power.wakefulness=2 && property:power.wake_lock=1
+    trigger state-background
+
+on property:power.wakefulness=3 && property:power.wake_lock=0
+    trigger state-asleep
+
+on property:power.wakefulness=3 && property:power.wake_lock=1
+    trigger state-background
+	
+on property:power.wakefulness=3 && property:persist.spectrum.profile=2
+    trigger state-backgroun
+
+on property:power.wakefulness=3 && property:persist.spectrum.profile=0
+    trigger state-backgrou	
+
+on property:power.wakefulness=3 && property:persist.spectrum.profile=1
+    trigger state-backgro
+
+on property:power.wakefulness=3 && property:persist.spectrum.profile=3
+    trigger state-backgro	

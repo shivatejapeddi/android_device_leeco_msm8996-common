@@ -152,7 +152,7 @@ TARGET_ENABLE_MEDIADRM_64 := true
 
 # Power
 TARGET_HAS_NO_WIFI_STATS := true
-TARGET_USES_INTERACTION_BOOST := true
+#TARGET_USES_INTERACTION_BOOST := true
 
 # Crypto
 TARGET_HW_DISK_ENCRYPTION := true
@@ -246,6 +246,10 @@ TARGET_RELEASETOOLS_EXTENSIONS := $(PLATFORM_PATH)
 
 # RIL
 TARGET_RIL_VARIANT := caf
+
+# Bionic
+TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
+    /vendor/bin/mm-qcamera-daemon=23
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk

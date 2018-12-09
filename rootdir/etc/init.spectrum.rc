@@ -14,6 +14,8 @@ service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.
 #Spectrum Initialization
 on property:sys.boot_completed=1
    start msm_irqbalance
+   start energy-awareness
+   start thermal-engine
    # Enable Spectrum support
    setprop spectrum.support 1
    # Add kernel name
@@ -24,8 +26,14 @@ on property:sys.boot_completed=1
 on property:persist.spectrum.profile=0
 
     # Set Balance power settings
-     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
-     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/background/cpus 0-2
+    write /dev/cpuset/system-background/cpus 0-1
+
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
 
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:960000
     write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
@@ -105,6 +113,11 @@ on property:persist.spectrum.profile=1
 
      # Set high performance settings
 
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-3
+
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:1324800
     write /sys/module/cpu_boost/parameters/input_boost_freq 1:1324800
     write /sys/module/cpu_boost/parameters/input_boost_freq 2:1324800
@@ -165,6 +178,11 @@ on property:persist.spectrum.profile=1
 
 # Battery
 on property:persist.spectrum.profile=2
+
+    write /dev/cpuset/top-app/cpus 0-2
+    write /dev/cpuset/foreground/cpus 0-1
+    write /dev/cpuset/background/cpus 0-1
+    write /dev/cpuset/system-background/cpus 0-1
 
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:307200
     write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
@@ -253,6 +271,11 @@ on property:persist.spectrum.profile=3
     write /sys/module/cpu_boost/parameters/input_boost_freq 3:1113600
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-3
+    write /dev/cpuset/background/cpus 0-3
+    write /dev/cpuset/system-background/cpus 0-3
+
      write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
      write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
 
@@ -303,5 +326,6 @@ on property:persist.spectrum.profile=3
     start perfd
     start thermal-engine
     trigger enable-low-power
+
 
 
