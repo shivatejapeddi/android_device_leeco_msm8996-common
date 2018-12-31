@@ -49,6 +49,7 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 
     private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
         private Preference mKcalPref;
+        private ListPreference mSPECTRUM;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mCameraFocusFix;
 

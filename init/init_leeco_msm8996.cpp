@@ -156,6 +156,7 @@ void init_target_properties()
     }
 }
 
+/*
 void init_alarm_boot_properties()
 {
     char const *boot_reason_file = "/proc/sys/kernel/boot_reason";
@@ -176,7 +177,7 @@ void init_alarm_boot_properties()
          * 6 -> PON1 pin toggled (for secondary PMICs)
          * 7 -> CBLPWR_N pin toggled (for external power supply)
          * 8 -> KPDPWR_N pin toggled (power key pressed)
-         */
+         
         if (Trim(boot_reason) == "0") {
             property_set("ro.boot.bootreason", "invalid");
             property_set("ro.alarm_boot", "false");
@@ -217,9 +218,9 @@ void init_alarm_boot_properties()
         LOG(ERROR) << "Unable to read bootreason from " << boot_reason_file;
     }
 }
+*/
 
 void vendor_load_properties() {
     LOG(INFO) << "Loading vendor specific properties";
     init_target_properties();
-    init_alarm_boot_properties();
 }

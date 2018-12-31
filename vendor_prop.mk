@@ -67,7 +67,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
     bt.max.hfpclient.connections=1 \
-    qcom.bluetooth.soc=rome \
+    vendor.qcom.bluetooth.soc=rome \
     ro.bluetooth.ftm_enabled=true \
     ro.bluetooth.wipower=true \
     ro.bluetooth.emb_wp_mode=true
@@ -91,6 +91,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # CNE
 PRODUCT_PROPERTY_OVERRIDES += \
+    persist.vendor.cne.feature=1 \
     persist.cne.feature=1
 
 # Data modules
@@ -157,26 +158,15 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.rild.nitz_short_ons_3="" \
     ril.subscription.types=NV,RUIM \
     DEVICE_PROVISIONED=1 \
-    persist.volte_enalbed_by_hw=1 \
-    persist.radio.data_ltd_sys_ind=1 \
-    ro.telephony.default_network=10,10 \
+    ro.telephony.default_network=22,22 \
     telephony.lteOnCdmaDevice=1 \
     ro.telephony.call_ring.multiple=false \
-    persist.radio.apm_sim_not_pwdn=1 \
-    persist.radio.custom_ecc=1 \
-    persist.radio.sib16_support=1 \
-    persist.data.qmi.adb_logmask=0 \
+    persist.vendor.radio.apm_sim_not_pwdn=1 \
+    persist.vendor.radio.sib16_support=1 \
+    persist.vendor.radio.custom_ecc=1 \
+    persist.vendor.radio.rat_on=combine \
     persist.net.doxlat=true \
-    persist.oem.dump=0 \
-    persist.radio.hw_mbn_update=0 \
-    persist.radio.sw_mbn_update=0 \
-    persist.radio.start_ota_daemon=0 \
-    persist.data.iwlan.enable=true \
-    persist.radio.VT_ENABLE=1 \
-    persist.radio.REVERSE_QMI=0 \
-    persist.radio.ROTATION_ENABLE=1 \
-    persist.dbg.volte_avail_ovr=1 \
-    persist.dbg.vt_avail_ovr=1
+    persist.oem.dump=0
 
 #default SAR mode 0:off/1:on
 PRODUCT_PROPERTY_OVERRIDES += \
@@ -227,4 +217,35 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.radio.VT_HYBRID_ENABLE=1 \
     persist.dbg.wfc_avail_ovr=1 \
-    persist.pm.krnl_wl_block=1
+    persist.pm.krnl_wl_block=1 \
+    vendor.gralloc.disable_wb_ubwc=1 \
+    vendor.display.disable_skip_validate=1 \
+    ro.vendor.use_data_netmgrd=true \
+    persist.data.netmgrd.qos.enable=true \
+    persist.vendor.data.mode=concurrent \
+    persist.vendor.data.profile_update=true \
+    persist.hwc.enable_vds=1 \
+    persist.debug.wfd.enable=1 \
+    persist.spectrum.profile=0 \
+    persist.sys.wfd.nohdcp=1 \
+    debug.sf.enable_hwc_vds=1 \
+    persist.volte_enalbed_by_hw=1 \
+    persist.vendor.radio.data_ltd_sys_ind=1 \
+    persist.vendor.radio.start_ota_daemon=1 \
+    persist.vendor.radio.sw_mbn_update]=1 \
+    persist.vendor.radio.hw_mbn_update=1 \
+    persist.radio.VT_ENABLE=1 \
+    persist.radio.ROTATION_ENABLE=1 \
+    persist.dbg.vt_avail_ovr=1 \
+    persist.data.iwlan.enable=true \
+    persist.vendor.qti.telephony.vt_cam_interface=2
+
+#QTI Performance
+PRODUCT_PROPERTY_OVERRIDES += \
+    vendor.iop.enable_uxe=1 \
+    vendor.perf.iop_v3.enable=1 \
+    ro.vendor.at_library=libqti-at.so \
+    persist.vendor.qti.games.gt.prof=1 \
+    ro.vendor.qti.core_ctl_min_cpu=2 \
+    ro.vendor.qti.core_ctl_max_cpu=4 \
+    vendor.rild.libpath=/vendor/lib64/libril-qc-qmi-1.so
