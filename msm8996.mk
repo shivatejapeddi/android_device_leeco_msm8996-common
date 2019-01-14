@@ -160,6 +160,7 @@ PRODUCT_PACKAGES += \
     init.spectrum.rc \
     init.class_late.sh \
     init.class_main.sh \
+    init.profile.sh \
     init.qcom.early_boot.sh \
     init.qcom.factory.rc \
     init.qcom.post_boot.sh \
