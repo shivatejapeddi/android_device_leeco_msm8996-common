@@ -156,8 +156,18 @@ PRODUCT_PACKAGES += \
     init.qcom.bt.sh \
     init.qcom.usb.rc \
     ueventd.qcom.rc \
-    init.aex.rc \
-    init.spectrum.rc
+    init.leeco.rc \
+    init.spectrum.rc \
+    init.class_late.sh \
+    init.class_main.sh \
+    init.qcom.early_boot.sh \
+    init.qcom.factory.rc \
+    init.qcom.post_boot.sh \
+    init.qcom.sdio.sh \
+    init.qcom.sensors.sh \
+    init.qcom.ssr.sh \
+    init.qti.ims.sh \
+    init.target.rc
 
 
 # Display
