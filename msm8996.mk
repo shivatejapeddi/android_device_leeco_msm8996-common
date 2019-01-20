@@ -147,6 +147,7 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libcnefeatureconfig
 
+
 # Common init scripts
 PRODUCT_PACKAGES += \
     fstab.qcom \
@@ -169,8 +170,15 @@ PRODUCT_PACKAGES += \
     init.qcom.ssr.sh \
     init.qti.ims.sh \
     init.target.rc \
-    init.uei.sh \
-    init.spectrum.rc
+    init.uei.sh
+
+# Consumer IR
+PRODUCT_PACKAGES += \
+    android.hardware.ir@1.0-service.leeco_8996 \
+    ConsumerirTransmitter
+
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/android.hardware.consumerir.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.consumerir.xml
 
 
 # Display
