@@ -39,3 +39,4 @@
 
 /sys/class/leds/torch-light[0-9](/.*)?                                   u:object_r:sysfs_torch:s0
 /sys/devices/soc/soc:qcom,camera-flash/flashled[0-9](/.*)?               u:object_r:sysfs_torch:s0
+/sys/remote/enable                                                       u:object_r:sysfs_ir_enable:s0

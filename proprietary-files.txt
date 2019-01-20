@@ -798,3 +798,8 @@ vendor/lib/libwfdmodulehdcpsession.so|89fc62ee8f41bde6b2dcc9bcde3e52954ae5253d
 
 # Wi-Fi - Gemini 8.0.0/OPR1.170623.032/8.5.24
 vendor/bin/cnss-daemon
+
+# consumerir - from le_x10 (x850) - 7.1.1/LEXCNFN6061705181T/letv05181516
+-vendor/app/UEIQuicksetSDKLeTV
+vendor/etc/UEISettings
+
