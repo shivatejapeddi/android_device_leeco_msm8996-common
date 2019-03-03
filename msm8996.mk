@@ -172,6 +172,10 @@ PRODUCT_PACKAGES += \
     init.target.rc \
     init.uei.sh
 
+#Thermal
+PRODUCT_PACKAGES += \
+    ThermalController
+
 # Consumer IR
 PRODUCT_PACKAGES += \
     android.hardware.ir@1.0-service.leeco_8996 \

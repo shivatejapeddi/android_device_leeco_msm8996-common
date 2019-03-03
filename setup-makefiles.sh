@@ -18,6 +18,10 @@
 
 set -e
 
+
+DEVICE_COMMON=msm8996-common
+VENDOR=leeco
+
 INITIAL_COPYRIGHT_YEAR=2016
 
 # Load extract_utils and do some sanity checks
