@@ -7,7 +7,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-# http://www.apache.org/licenses/LICENSE-2.0
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,11 +18,9 @@
 
 set -e
 
-# Required!
-DEVICE_COMMON=msm8996-common
-VENDOR=leeco
+INITIAL_COPYRIGHT_YEAR=2016
 
-# Load extractutils and do some sanity checks
+# Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$MY_DIR" ]]; then MY_DIR="$PWD"; fi
 
@@ -35,29 +33,29 @@ if [ ! -f "$HELPER" ]; then
 fi
 . "$HELPER"
 
-# Initialize the helper
+# Initialize the helper for common
 setup_vendor "$DEVICE_COMMON" "$VENDOR" "$LINEAGE_ROOT" true
 
 # Copyright headers and guards
 write_headers "zl1 x2"
 
-# Common QC blobs
-write_makefiles "$MY_DIR"/proprietary-files-qc.txt
-
-# QC Perf blobs
-write_makefiles "$MY_DIR"/proprietary-files-qc-perf.txt
+# The standard common blobs
+write_makefiles "$MY_DIR"/proprietary-files.txt true
 
 # We are done with common
 write_footers
 
-# Initialize the helper for device
-setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT"
+if [ -s "$MY_DIR"/../$DEVICE/proprietary-files.txt ]; then
+    # Reinitialize the helper for device
+    INITIAL_COPYRIGHT_YEAR="$DEVICE_BRINGUP_YEAR"
+    setup_vendor "$DEVICE" "$VENDOR" "$LINEAGE_ROOT" false
 
-# Copyright headers and guards
-write_headers
+    # Copyright headers and guards
+    write_headers
 
-# The device blobs
-write_makefiles "$MY_DIR"/../$DEVICE/proprietary-files.txt
+    # The standard device blobs
+    write_makefiles "$MY_DIR"/../$DEVICE/proprietary-files.txt true
 
-# We are done with device
-write_footers
+    # We are done!
+    write_footers
+fi

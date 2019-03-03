@@ -13,12 +13,21 @@ service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.
 
 #Spectrum Initialization
 on property:sys.boot_completed=1
+   start profile-sh
    start msm_irqbalance
+   start energy-awareness
+   start thermal-engine
+   start qfp-daemon
    # Enable Spectrum support
    setprop spectrum.support 1
    # Add kernel name
    setprop persist.spectrum.kernel Aex
 
+    # update cpusets now that boot is complete and we want better load balancing
+    write /dev/cpuset/top-app/cpus 0-3
+    write /dev/cpuset/foreground/cpus 0-2
+    write /dev/cpuset/background/cpus 0
+    write /dev/cpuset/system-background/cpus 0-2
 
 # Balance (default profile)
 on property:persist.spectrum.profile=0
@@ -27,11 +36,21 @@ on property:persist.spectrum.profile=0
      write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
      write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
 
-    write /sys/module/cpu_boost/parameters/input_boost_freq 0:960000
+    write /sys/module/cpu_boost/parameters/input_boost_freq 0:1036800
     write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
-    write /sys/module/cpu_boost/parameters/input_boost_freq 2:940800
+    write /sys/module/cpu_boost/parameters/input_boost_freq 2:1036800
     write /sys/module/cpu_boost/parameters/input_boost_freq 3:0
     write /sys/module/cpu_boost/parameters/input_boost_ms 20
+	
+    # Set idle GPU to 133 MHz
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_clock_mhz 133
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 133000000
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/max_clock_mhz 624
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000	
+	
 
     # Add configs here
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
@@ -77,105 +96,168 @@ on property:persist.spectrum.profile=0
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif 0
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction 0
 	write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boostpulse_duration 0
+	
+	write /proc/sys/kernel/sched_window_stats_policy 2
+	write /proc/sys/kernel/sched_upmigrate 85
+	write /proc/sys/kernel/sched_downmigrate 65
+	write /proc/sys/kernel/sched_spill_nr_run 5
+	write /proc/sys/kernel/sched_spill_load 100
+	write /proc/sys/kernel/sched_init_task_load 30
+	write /proc/sys/kernel/sched_heavy_task 65
+	write /proc/sys/kernel/sched_enable_power_aware 1
+	write /proc/sys/kernel/sched_upmigrate_min_nice 10
+	write /proc/sys/kernel/sched_ravg_hist_size 4
+	write /proc/sys/kernel/sched_small_wakee_task_load 4
+	write /proc/sys/kernel/sched_wakeup_load_threshold 110
+	write /proc/sys/kernel/sched_small_task 7
+	write /proc/sys/kernel/sched_big_waker_task_load 35
+	write /proc/sys/kernel/sched_rt_runtime_us 950000
+	write /proc/sys/kernel/sched_rt_period_us 1000000
+	write /proc/sys/kernel/sched_migration_fixup 1
+	write /proc/sys/kernel/sched_freq_dec_notify 410000
+	write /proc/sys/kernel/sched_freq_inc_notify 600000
+	write /proc/sys/kernel/sched_boost 0
 
-    # Setting b.L scheduler parameters
-    write /proc/sys/kernel/sched_boost 0
-    write /proc/sys/kernel/sched_upmigrate 95
-    write /proc/sys/kernel/sched_downmigrate 65
-    write /proc/sys/kernel/sched_freq_inc_notify 610000
-    write /proc/sys/kernel/sched_freq_dec_notify 410000
-    write /proc/sys/kernel/sched_rt_runtime_us 950000
-    write /proc/sys/kernel/sched_rt_period_us 1000000
-    write /proc/sys/kernel/sched_big_waker_task_load 33
-    write /proc/sys/kernel/sched_small_task 15
-    write /proc/sys/kernel/sched_wakeup_load_threshold 110
-    write /proc/sys/kernel/sched_small_wakee_task_load 15
-    write /proc/sys/kernel/sched_ravg_hist_size 4
-    write /proc/sys/kernel/sched_upmigrate_min_nice 7
-    write /proc/sys/kernel/sched_heavy_task 96
-    write /proc/sys/kernel/sched_spill_nr_run 3
-    write /proc/sys/kernel/sched_init_task_load 100
-
-    start perfd
+	write /proc/sys/vm/swappiness 0
+	write /proc/sys/vm/swappiness 0
+	write /proc/sys/vm/vfs_cache_pressure 100
+	write /proc/sys/vm/dirty_ratio 80
+	write /proc/sys/vm/dirty_background_ratio 20
+	write /proc/sys/vm/min_free_kbytes 4096
+	write /proc/sys/vm/dirty_expire_centisecs 100
+	write /proc/sys/vm/dirty_writeback_centisecs 250
+	write /proc/sys/vm/oom_kill_allocating_task 0
+	write /proc/sys/vm/page-cluster 3
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /sys/module/lowmemorykiller/parameters/minfree "23939,44091,58788,73485,88182,102879"
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /proc/sys/net/ipv4/tcp_congestion_control "westwood"
+	
+ 	start perf-hal-1-0
     start thermal-engine
-    trigger enable-low-power
 
 # Performance (based on DrunkSauce Lite)
 on property:persist.spectrum.profile=1
 
      # Set high performance settings
 
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+ 
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:1324800
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1:1324800
+    write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
     write /sys/module/cpu_boost/parameters/input_boost_freq 2:1324800
-    write /sys/module/cpu_boost/parameters/input_boost_freq 3:1324800
+    write /sys/module/cpu_boost/parameters/input_boost_freq 3:0
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
-     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
-     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
-
-    # Add configs here
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "0"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 10000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1228800
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
+    # Set idle GPU to 133 MHz
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 3
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_clock_mhz 401
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 401000000
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/max_clock_mhz 624
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000
+	
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1593600
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "50 1036800:60 1324800:75"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 50000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1324800
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "25000 1324800:25000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 80
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 50000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/fast_ramp_down 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 1593600
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/powersave_bias 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "38 800000:43 960000:60 1100000:63 1300000:65 1400000:75 1500000:99"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 20000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 1
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 307200
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/enable_prediction 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/enable_prediction 0
 
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_migration_notif 1
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/above_hispeed_delay "0"
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/go_hispeed_load 90
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_rate 10000
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/hispeed_freq 1555200
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 21504000
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/target_loads "35 900000:53 1100000:57 1300000:70 1500000:73 1700000:75 1900000:80 20736000:15 21504000:99"
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2150400
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/target_loads "65 1036800:75 1248000:80 1400000:85 1632000:90"	
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_slack 50000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/hispeed_freq 1324800
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/above_hispeed_delay "25000 1632000:25000"
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/go_hispeed_load 80
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/min_sample_time 20000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresis 50000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif 1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boost 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/powersave_bias 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_slack -1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/fast_ramp_down 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/align_windows 1
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresis 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 307200
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction 1
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/align_windows 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_migration_notif 1
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_sched_load 1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boostpulse_duration 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/io_is_busy 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction 0
 
-    start perfd
+	write /proc/sys/kernel/sched_window_stats_policy 1
+	write /proc/sys/kernel/sched_upmigrate 90
+	write /proc/sys/kernel/sched_downmigrate 60
+	write /proc/sys/kernel/sched_spill_nr_run 10
+	write /proc/sys/kernel/sched_spill_load 90
+	write /proc/sys/kernel/sched_init_task_load 90
+	write /proc/sys/kernel/sched_heavy_task 0
+	write /proc/sys/kernel/sched_enable_power_aware 1
+	write /proc/sys/kernel/sched_upmigrate_min_nice 10
+	write /proc/sys/kernel/sched_ravg_hist_size 5
+	write /proc/sys/kernel/sched_small_wakee_task_load 10
+	write /proc/sys/kernel/sched_wakeup_load_threshold 110
+	write /proc/sys/kernel/sched_small_task 5
+	write /proc/sys/kernel/sched_big_waker_task_load 20
+	write /proc/sys/kernel/sched_rt_runtime_us 950000
+	write /proc/sys/kernel/sched_rt_period_us 1000000
+	write /proc/sys/kernel/sched_migration_fixup 1
+	write /proc/sys/kernel/sched_freq_dec_notify 410000
+	write /proc/sys/kernel/sched_freq_inc_notify 40000
+	write /proc/sys/kernel/sched_boost 1
+
+	write /proc/sys/vm/swappiness 0
+	write /proc/sys/vm/vfs_cache_pressure 100
+	write /proc/sys/vm/dirty_ratio 80
+	write /proc/sys/vm/dirty_background_ratio 20
+	write /proc/sys/vm/min_free_kbytes 4096
+	write /proc/sys/vm/dirty_expire_centisecs 100
+	write /proc/sys/vm/dirty_writeback_centisecs 250
+	write /proc/sys/vm/oom_kill_allocating_task 0
+	write /proc/sys/vm/page-cluster 3
+	write /proc/sys/kernel/random/read_wakeup_threshold 64
+	write /proc/sys/kernel/random/write_wakeup_threshold 128
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /sys/module/lowmemorykiller/parameters/minfree "22149,30059,38760,58536,67238,79104"
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /proc/sys/net/ipv4/tcp_congestion_control "westwood"
+
+    start perf-hal-1-0
     start thermal-engine
-    trigger enable-low-power
 
 # Battery
 on property:persist.spectrum.profile=2
-
+	 
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:307200
     write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
     write /sys/module/cpu_boost/parameters/input_boost_freq 2:307200
     write /sys/module/cpu_boost/parameters/input_boost_freq 3:0
     write /sys/module/cpu_boost/parameters/input_boost_ms 10
 
+    # Set idle GPU to 133 MHz
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_clock_mhz 133
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 133000000
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/max_clock_mhz 624
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000
+	
      write /sys/class/devfreq/soc:qcom,cpubw/governor "powersave"
      write /sys/class/kgsl/kgsl-3d0/devfreq/governor  "powersave"
 
-    # Add configs here
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
@@ -218,90 +300,157 @@ on property:persist.spectrum.profile=2
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 307200
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif 1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boostpulse_duration 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boostpulse_duration 0	 
+    
+	write /proc/sys/kernel/sched_window_stats_policy 2
+	write /proc/sys/kernel/sched_upmigrate 90
+	write /proc/sys/kernel/sched_downmigrate 65
+	write /proc/sys/kernel/sched_spill_nr_run 7
+	write /proc/sys/kernel/sched_spill_load 97
+	write /proc/sys/kernel/sched_init_task_load 30
+	write /proc/sys/kernel/sched_heavy_task 96
+	write /proc/sys/kernel/sched_enable_power_aware 1
+	write /proc/sys/kernel/sched_upmigrate_min_nice 7
+	write /proc/sys/kernel/sched_ravg_hist_size 4
+	write /proc/sys/kernel/sched_small_wakee_task_load 15
+	write /proc/sys/kernel/sched_wakeup_load_threshold 110
+	write /proc/sys/kernel/sched_small_task 15
+	write /proc/sys/kernel/sched_big_waker_task_load 33
+	write /proc/sys/kernel/sched_rt_runtime_us 950000
+	write /proc/sys/kernel/sched_rt_period_us 1000000
+	write /proc/sys/kernel/sched_migration_fixup 1
+	write /proc/sys/kernel/sched_freq_dec_notify 410000
+	write /proc/sys/kernel/sched_freq_inc_notify 610000
+	write /proc/sys/kernel/sched_boost 0
 
-    # Setting b.L scheduler parameters
-    write /proc/sys/kernel/sched_boost 0
-    write /proc/sys/kernel/sched_upmigrate 95
-    write /proc/sys/kernel/sched_downmigrate 65
-    write /proc/sys/kernel/sched_freq_inc_notify 610000
-    write /proc/sys/kernel/sched_freq_dec_notify 410000
-    write /proc/sys/kernel/sched_rt_runtime_us 950000
-    write /proc/sys/kernel/sched_rt_period_us 1000000
-    write /proc/sys/kernel/sched_big_waker_task_load 33
-    write /proc/sys/kernel/sched_small_task 15
-    write /proc/sys/kernel/sched_wakeup_load_threshold 110
-    write /proc/sys/kernel/sched_small_wakee_task_load 15
-    write /proc/sys/kernel/sched_ravg_hist_size 4
-    write /proc/sys/kernel/sched_upmigrate_min_nice 7
-    write /proc/sys/kernel/sched_heavy_task 96
-    write /proc/sys/kernel/sched_spill_nr_run 3
-    write /proc/sys/kernel/sched_init_task_load 100
-
-    start perfd
+	write /proc/sys/vm/swappiness 0
+	write /proc/sys/vm/vfs_cache_pressure 100
+	write /proc/sys/vm/dirty_ratio 80
+	write /proc/sys/vm/dirty_background_ratio 20
+	write /proc/sys/vm/min_free_kbytes 4096
+	write /proc/sys/vm/dirty_expire_centisecs 100
+	write /proc/sys/vm/dirty_writeback_centisecs 250
+	write /proc/sys/vm/oom_kill_allocating_task 0
+	write /proc/sys/vm/page-cluster 3
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /sys/module/lowmemorykiller/parameters/minfree "23939,44091,58788,73485,88182,102879"
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /proc/sys/net/ipv4/tcp_congestion_control "westwood"
+	
+    start perf-hal-1-0
     start thermal-engine
     trigger enable-low-power
-
+	
 # Gaming
 on property:persist.spectrum.profile=3
     # Add configs here
      # Set high performance settings
-
-    write /sys/module/cpu_boost/parameters/input_boost_freq 0:1113600
-    write /sys/module/cpu_boost/parameters/input_boost_freq 1:1113600
-    write /sys/module/cpu_boost/parameters/input_boost_freq 2:1113600
-    write /sys/module/cpu_boost/parameters/input_boost_freq 3:1113600
+	 
+    write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
+    write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
+	 
+    write /sys/module/cpu_boost/parameters/input_boost_freq 0:1324800
+    write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
+    write /sys/module/cpu_boost/parameters/input_boost_freq 2:1324800
+    write /sys/module/cpu_boost/parameters/input_boost_freq 3:0
     write /sys/module/cpu_boost/parameters/input_boost_ms 40
 
-     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
-     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
-
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 95
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 10000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack -1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1228800
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
+    # Set idle GPU to 133 MHz
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 3
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_clock_mhz 401
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 401000000
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/max_clock_mhz 624
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000		
+	
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1593600
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "50 1036800:60 1324800:75"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 50000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1324800
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "25000 1324800:25000"
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 80
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 20000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 50000
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/fast_ramp_down 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/screen_off_maxfreq 960000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/powersave_bias 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows 1
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "75 307200:38 422400:48 480000:53 652800:56 729600:60 844800:70 960000:75 1228800:77 1401600:79 1478400:85"
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 49000
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/max_freq_hysteresis 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/align_windows 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_migration_notif 1
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/use_sched_load 1
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 0
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 307200
-    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/ignore_hispeed_on_notif 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
     write /sys/devices/system/cpu/cpu0/cpufreq/interactive/enable_prediction 0
 
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_governor "interactive"
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_sched_load 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_migration_notif 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/above_hispeed_delay 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/go_hispeed_load 95
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_rate 10000
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/hispeed_freq 1401600
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/io_is_busy 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/target_loads "75 307200:38 403200:45 480000:47 652800:53 729600:58 844800:63 940800:87 1555200:83 1632000:85 1824000:87 1996800:92 2073600:2 2150400:99"
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/min_sample_time 19000
+    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_max_freq 2150400
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/target_loads "65 1036800:75 1248000:80 1400000:85 1632000:90"	
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_slack 50000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/hispeed_freq 1324800
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_rate 20000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/above_hispeed_delay "25000 1632000:25000"
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/go_hispeed_load 80
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/min_sample_time 20000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresis 50000
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif 1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boost 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/timer_slack -1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/fast_ramp_down 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/screen_off_maxfreq 1324800
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/powersave_bias 1
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/align_windows 1
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/max_freq_hysteresis 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 307200
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/ignore_hispeed_on_notif 0
-    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/align_windows 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_migration_notif 1
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/use_sched_load 1
     write /sys/devices/system/cpu/cpu2/cpufreq/interactive/boostpulse_duration 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/io_is_busy 0
+    write /sys/devices/system/cpu/cpu2/cpufreq/interactive/enable_prediction 0
 
-    start perfd
+	write /proc/sys/kernel/sched_window_stats_policy 1
+	write /proc/sys/kernel/sched_upmigrate 90
+	write /proc/sys/kernel/sched_downmigrate 60
+	write /proc/sys/kernel/sched_spill_nr_run 10
+	write /proc/sys/kernel/sched_spill_load 90
+	write /proc/sys/kernel/sched_init_task_load 90
+	write /proc/sys/kernel/sched_heavy_task 0
+	write /proc/sys/kernel/sched_enable_power_aware 1
+	write /proc/sys/kernel/sched_upmigrate_min_nice 10
+	write /proc/sys/kernel/sched_ravg_hist_size 5
+	write /proc/sys/kernel/sched_small_wakee_task_load 10
+	write /proc/sys/kernel/sched_wakeup_load_threshold 110
+	write /proc/sys/kernel/sched_small_task 5
+	write /proc/sys/kernel/sched_big_waker_task_load 20
+	write /proc/sys/kernel/sched_rt_runtime_us 950000
+	write /proc/sys/kernel/sched_rt_period_us 1000000
+	write /proc/sys/kernel/sched_migration_fixup 1
+	write /proc/sys/kernel/sched_freq_dec_notify 410000
+	write /proc/sys/kernel/sched_freq_inc_notify 40000
+	write /proc/sys/kernel/sched_boost 1
+
+	write /proc/sys/vm/swappiness 0
+	write /proc/sys/vm/vfs_cache_pressure 100
+	write /proc/sys/vm/dirty_ratio 80
+	write /proc/sys/vm/dirty_background_ratio 20
+	write /proc/sys/vm/min_free_kbytes 4096
+	write /proc/sys/vm/dirty_expire_centisecs 100
+	write /proc/sys/vm/dirty_writeback_centisecs 250
+	write /proc/sys/vm/oom_kill_allocating_task 0
+	write /proc/sys/vm/page-cluster 3
+	write /proc/sys/kernel/random/read_wakeup_threshold 64
+	write /proc/sys/kernel/random/write_wakeup_threshold 128
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /sys/module/lowmemorykiller/parameters/minfree "22149,30059,38760,58536,67238,79104"
+	write /sys/module/lowmemorykiller/parameters/enable_adaptive_lmk 0
+	write /proc/sys/net/ipv4/tcp_congestion_control "westwood"
+	
+ 	start perf-hal-1-0
     start thermal-engine
-    trigger enable-low-power
 
+# Gaming
+on property:persist.spectrum.profile=4
+   	start qcom-post-boot
 
+    # Set idle GPU to 133 MHz
+    write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
+    write /sys/class/kgsl/kgsl-3d0/max_pwrlevel 0
+    write /sys/class/kgsl/kgsl-3d0/devfreq/adrenoboost 0
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_clock_mhz 133
+    write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 133000000
+    write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/max_clock_mhz 624
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000	
