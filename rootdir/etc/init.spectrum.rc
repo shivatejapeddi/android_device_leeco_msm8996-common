@@ -4,6 +4,8 @@
 
 on boot
 
+    setprop thermal.profile 0
+
 service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.conf
     class main
     user root
@@ -453,4 +455,35 @@ on property:persist.spectrum.profile=4
     write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/min_clock_mhz 133
     write /sys/class/kgsl/kgsl-3d0/devfreq/min_freq 133000000
     write /sys/devices/soc/b00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/max_clock_mhz 624
-    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000	
+    write /sys/class/kgsl/kgsl-3d0/devfreq/max_freq 624000000
+
+
+#Default
+on property:thermal.profile=0
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-default.conf"
+    stop thermal-engine
+    start thermal-engine
+
+#Game
+on property:thermal.profile=9
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-game.conf"
+    stop thermal-engine
+    start thermal-engine
+
+#Performance
+on property:thermal.profile=10
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-performance.conf"
+    stop thermal-engine
+    start thermal-engine
+
+#Video
+on property:thermal.profile=14
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-video.conf"
+    stop thermal-engine
+    start thermal-engine
+
+#Video
+on property:thermal.profile=13
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-game.conf"
+    stop thermal-engine
+    start thermal-engine
