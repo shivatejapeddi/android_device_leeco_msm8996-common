@@ -20,6 +20,7 @@ import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import android.os.SystemProperties;
 
 public class ThermalProfiles {
     public static final int MODE_DEFAULT = 0;
@@ -41,10 +42,11 @@ public class ThermalProfiles {
             case "com.android.dialer":
             case "com.google.android.dialer":
                 return MODE_DIALER;
+            case "org.lineageos.jelly":
+                return MODE_PERFORMANCE;
             case "com.antutu.ABenchMark":
             case "com.futuremark.dmandroid.application":
             case "com.primatelabs.geekbench":
-                return MODE_PERFORMANCE;
             case "com.tencent.ig":
             case "com.dts.freefireth":
             case "com.epicgames.fortnite":
@@ -56,13 +58,19 @@ public class ThermalProfiles {
             case "com.google.android.videos":
             case "com.amazon.avod.thirdpartyclient":
             case "com.google.android.apps.youtube.kids":
+            case "com.jio.jioplay.tv":
+            case "org.videolan.vlc":
+            case "com.mxtech.videoplayer.ad":
+            case "in.startv.hotstar":
+            case "tv.accedo.airtel.wynk":
+            case "com.zhiliaoapp.musically":
                 return MODE_VIDEO;
-            case "org.lineageos.jelly":
             case "com.android.chrome":
             case "com.UCMobile.intl":
                 return MODE_BROWSER;
             case "org.codeaurora.snapcam":
             case "com.android.camera":
+            case "com.android.camera2":
             case "com.android.gallery3d":
             case "com.google.android.apps.photos":
             case "com.google.android.GoogleCamera":
@@ -72,11 +80,7 @@ public class ThermalProfiles {
         }
     }
 
-    public static void writeProfile(int profileId) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("/sys/class/thermal/thermal_message/sconfig"))) {
-            writer.write(Integer.toString(profileId));
-        } catch (Exception e) {
-            Log.e(TAG, "Failed to write profile", e);
-        }
+      public static void writeProfile(int profileId) {
+         SystemProperties.set("thermal.profile",Integer.toString(profileId));
     }
 }
