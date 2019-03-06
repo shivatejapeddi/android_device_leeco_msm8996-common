@@ -387,11 +387,11 @@ PRODUCT_PACKAGES += \
     android.hardware.sensors@1.0-service
 
 # Telephony
-PRODUCT_PACKAGES += \
-    telephony-ext
+#PRODUCT_PACKAGES += \
+#    telephony-ext
 
-PRODUCT_BOOT_JARS += \
-    telephony-ext
+#PRODUCT_BOOT_JARS += \
+#    telephony-ext
 
 # Thermal
 PRODUCT_COPY_FILES += \
@@ -481,3 +481,6 @@ PRODUCT_BOOT_JARS += QPerformance
 
 # Preloading UxPerformance jar to ensure faster UX invoke in Boost Framework
 PRODUCT_BOOT_JARS += UxPerformance
+
+
+ALLOW_MISSING_DEPENDENCIES=true

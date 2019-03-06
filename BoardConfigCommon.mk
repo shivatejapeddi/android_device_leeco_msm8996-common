@@ -131,6 +131,9 @@ WITH_LINEAGE_CHARGER := false
 TARGET_INIT_VENDOR_LIB := libinit_leeco_msm8996
 TARGET_RECOVERY_DEVICE_MODULES := libinit_leeco_msm8996
 
+# EAP-SIM security
+DISABLE_EAP_PROXY := true
+
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 67108864
 BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
@@ -253,7 +256,7 @@ TARGET_PROCESS_SDK_VERSION_OVERRIDE := \
     /vendor/bin/mm-qcamera-daemon=23
 
 # SELinux
-include device/qcom/sepolicy/sepolicy.mk
+include device/qcom/sepolicy/Android.mk
 #BOARD_SEPOLICY_DIRS += $(PLATFORM_PATH)/sepolicy
 
 -include vendor/leeco/msm8996-common/BoardConfigVendor.mk
