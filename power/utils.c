@@ -35,6 +35,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include <sys/stat.h>
 #include "utils.h"
 #include "list.h"
 #include "hint-data.h"
@@ -42,6 +43,8 @@
 
 #define LOG_TAG "QCOM PowerHAL"
 #include <utils/Log.h>
+
+#define INTERACTION_BOOST
 
 char scaling_gov_path[4][80] ={
     "sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
@@ -229,6 +232,7 @@ void interaction(int duration, int num_args, int opt_list[])
 
 int interaction_with_handle(int lock_handle, int duration, int num_args, int opt_list[])
 {
+#ifdef INTERACTION_BOOST
     if (duration < 0 || num_args < 1 || opt_list[0] == NULL)
         return 0;
 
@@ -240,6 +244,8 @@ int interaction_with_handle(int lock_handle, int duration, int num_args, int opt
         }
     }
     return lock_handle;
+#endif
+    return 0;
 }
 
 //this is interaction_with_handle using perf_hint instead of
