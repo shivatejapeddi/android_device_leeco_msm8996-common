@@ -170,7 +170,9 @@ PRODUCT_PACKAGES += \
     init.qcom.ssr.sh \
     init.qti.ims.sh \
     init.target.rc \
-    init.uei.sh
+    init.uei.sh \
+    init.cdla.sh \
+    init.cdlapref.sh
 
 #Thermal
 PRODUCT_PACKAGES += \

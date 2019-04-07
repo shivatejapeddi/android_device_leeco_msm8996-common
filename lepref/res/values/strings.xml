@@ -36,6 +36,12 @@
     <string name="qc_title">Quick Charge</string>
     <string name="qc_summary">Requires Disconnect and Reconnect of charger after Enable/disable</string>
 
+
+    <!-- Battery -->
+    <string name="cdla_settings_title">Audio</string>
+    <string name="cdla_title">CDLA</string>
+    <string name="cdla_summary">works only with EUI Audio</string>
+
     <!-- Camera -->
     <string name="camera_pref_title">Camera</string>
     <string name="camera_focus_fix_title">Autofocus Fix</string>

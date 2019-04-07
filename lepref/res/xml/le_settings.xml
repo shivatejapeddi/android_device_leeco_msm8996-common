@@ -25,6 +25,15 @@
             android:summary="@string/qc_summary" />
   </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="cdla"
+        android:title="@string/cdla_settings_title" >
+        <SwitchPreference
+            android:key="persist.cdla_enable"
+            android:defaultValue="true"
+            android:title="@string/cdla_title"
+            android:summary="@string/cdla_summary" />
+  </PreferenceCategory>
 
     <PreferenceCategory
             android:title="@string/graphics_title">

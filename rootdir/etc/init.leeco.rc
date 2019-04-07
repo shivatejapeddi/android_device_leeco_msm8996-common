@@ -56,6 +56,12 @@ on post-fs-data
 	
 on boot
 
+   # change for usb typec headset prop
+    chown media media /sys/module/snd_soc_msm8996/parameters/usb_typec_swap
+    chown media media /sys/module/snd_soc_wcd_mbhc/parameters/headset_swap_backmic
+    chown media media /sys/devices/virtual/typec/typec_device/supported_dev
+    chown media media /sys/module/cyccg/parameters/typec_headset_with_analog
+
     # Torch
     chown system system /sys/class/leds/torch-light0/brightness
     chown system system /sys/class/leds/torch-light1/brightness
@@ -117,12 +123,47 @@ service profile-sh /vendor/bin/init.profile.sh
     disabled
     oneshot
 
+service cdla-sh /vendor/bin/init.cdla.sh
+    class late_start
+    user root
+    group root system wakelock graphics
+    disabled
+    oneshot
+
+service cdlapref-sh /vendor/bin/init.cdlapref.sh
+    class late_start
+    user root
+    group root system wakelock graphics
+    disabled
+    oneshot
+
 on property:sys.boot_completed=1
     write /dev/kmsg "Boot completed"
     # CPE fw_name used by sound trigger HAL
     chown media audio /sys/kernel/wcd_cpe0/fw_name
     # Enable hvdcp
     setprop persist.hvdcp.allow_opti 1
+
+on property:persist.cdla_enable=1
+    write /sys/module/cyccg/parameters/typec_headset_with_analog 0
+    write /sys/module/snd_soc_msm8996/parameters/usb_typec_swap	0
+    write /sys/module/snd_soc_wcd_mbhc/parameters/headset_swap_backmic 0	
+
+on property:persist.cdla_enable=0
+    write /sys/module/cyccg/parameters/typec_headset_with_analog 1
+    write /sys/module/snd_soc_msm8996/parameters/usb_typec_swap	1
+    write /sys/module/snd_soc_wcd_mbhc/parameters/headset_swap_backmic 1
+
+on property:cdla.power.profile=1
+    write /sys/module/cyccg/parameters/typec_headset_with_analog 1
+    write /sys/module/snd_soc_msm8996/parameters/usb_typec_swap 1
+    write /sys/module/snd_soc_wcd_mbhc/parameters/headset_swap_backmic 0
+
+on property:cdla.power.profile=0
+   start cdla-sh
+
+on property:cdla.preference.profile=1
+   start cdlapref-sh
 
 on charger
     start hvdcp_opti

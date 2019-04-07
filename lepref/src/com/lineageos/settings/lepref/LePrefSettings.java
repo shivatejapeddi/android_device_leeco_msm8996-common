@@ -45,6 +45,8 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
 	private static final String SPECTRUM_KEY = "spectrum";
 	private static final String SPECTRUM_SYSTEM_PROPERTY = "persist.spectrum.profile";
 
+        private static final String CDLA_SYSTEM_PROPERTY = "persist.cdla_enable";
+
 	private static final String QC_SYSTEM_PROPERTY = "persist.sys.le_fast_chrg_enable";
 
     private static final String SYSTEM_PROPERTY_CAMERA_FOCUS_FIX = "persist.camera.focus_fix";
@@ -52,6 +54,8 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         private ListPreference mSPECTRUM;
 	private SwitchPreference mEnableQC;
 	private SwitchPreference mCameraFocusFix;
+        private SwitchPreference mEnableCDLA;
+
 
     private Preference mSaveLog;
 
@@ -77,6 +81,12 @@ public class LePrefSettings extends PreferenceActivity implements OnPreferenceCh
         if( mEnableQC != null ) {
             mEnableQC.setChecked(SystemProperties.getBoolean(QC_SYSTEM_PROPERTY, false));
             mEnableQC.setOnPreferenceChangeListener(this);
+        }
+
+        mEnableCDLA = (SwitchPreference) findPreference(CDLA_SYSTEM_PROPERTY);
+        if( mEnableCDLA != null ) {
+            mEnableCDLA.setChecked(SystemProperties.getBoolean(CDLA_SYSTEM_PROPERTY, false));
+            mEnableCDLA.setOnPreferenceChangeListener(this);
         }
 
         mCameraFocusFix = (SwitchPreference) findPreference(SYSTEM_PROPERTY_CAMERA_FOCUS_FIX);

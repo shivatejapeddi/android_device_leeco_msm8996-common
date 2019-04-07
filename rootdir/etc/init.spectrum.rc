@@ -51,6 +51,8 @@ on property:sys.boot_completed=1
    start energy-awareness
    start thermal-engine
    start qfp-daemon
+   start iop
+   start perfd
    # Enable Spectrum support
    setprop spectrum.support 1
    # Add kernel name
