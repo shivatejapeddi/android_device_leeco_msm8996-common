@@ -222,7 +222,7 @@ static void power_hint(struct power_module *module, power_hint_t hint,
         case POWER_HINT_INTERACTION:
         {
             int resources[] = {0x702, 0x20F, 0x30F};
-            int duration = 3000;
+            int duration = 1000;
 
             interaction(duration, sizeof(resources)/sizeof(resources[0]), resources);
         }
