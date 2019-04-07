@@ -42,10 +42,11 @@ public class ThermalProfiles {
             case "com.android.dialer":
             case "com.google.android.dialer":
                 return MODE_DIALER;
+            case "org.lineageos.jelly":
+                return MODE_PERFORMANCE;
             case "com.antutu.ABenchMark":
             case "com.futuremark.dmandroid.application":
             case "com.primatelabs.geekbench":
-                return MODE_PERFORMANCE;
             case "com.tencent.ig":
             case "com.dts.freefireth":
             case "com.epicgames.fortnite":
@@ -64,7 +65,6 @@ public class ThermalProfiles {
             case "tv.accedo.airtel.wynk":
             case "com.zhiliaoapp.musically":
                 return MODE_VIDEO;
-            case "org.lineageos.jelly":
             case "com.android.chrome":
             case "com.UCMobile.intl":
                 return MODE_BROWSER;

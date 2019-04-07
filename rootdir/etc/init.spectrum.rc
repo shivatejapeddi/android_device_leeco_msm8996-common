@@ -4,7 +4,38 @@
 
 on boot
 
-    setprop thermal.profile 0
+   #Create PERFD deamon related dirs
+   mkdir /data/misc/perfd 0755 root system
+   chmod 2755 /data/misc/perfd
+   mkdir /data/system/perfd 0770 root system
+   rm /data/system/perfd/default_values
+   chmod 2770 /data/system/perfd
+
+
+   #Create IOP deamon related dirs
+   mkdir /data/misc/iop 0770 root system
+
+service perfd /vendor/bin/perfd
+   class main
+   user root
+   group root readproc
+   disabled
+   socket perfd seqpacket 0666 root system
+   writepid /dev/cpuset/system-background/tasks
+
+service iop /vendor/bin/iop
+    class main
+    user root
+    group root
+    disabled
+    socket iop seqpacket 0666 root system
+    writepid /dev/cpuset/system-background/tasks
+
+service energy-awareness /vendor/bin/energy-awareness
+    class main
+    user root
+    group system
+    oneshot
 
 service msm_irqbalance /vendor/bin/msm_irqbalance -f /vendor/etc/msm_irqbalance.conf
     class main
@@ -472,7 +503,7 @@ on property:thermal.profile=9
 
 #Performance
 on property:thermal.profile=10
-    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-performance.conf"
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-default.conf"
     stop thermal-engine
     start thermal-engine
 
@@ -487,3 +518,10 @@ on property:thermal.profile=13
     setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-game.conf"
     stop thermal-engine
     start thermal-engine
+
+#Video
+on property:thermal.profile=11
+    setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-default.conf"
+    stop thermal-engine
+    start thermal-engine
+
