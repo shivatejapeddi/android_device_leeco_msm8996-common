@@ -2,8 +2,43 @@
 # Ramdisk file for profile based kernel management
 # Implimentation inspired by Franco's fku profiles
 
-on boot
+on init
+    # Create Power HAL tunables
+    mkdir /dev/voxpopuli 0555 system system
 
+on boot
+    # Set Power HAL tunables
+    write /dev/voxpopuli/enable_interaction_boost   1
+    write /dev/voxpopuli/fling_min_boost_duration   200
+    write /dev/voxpopuli/fling_max_boost_duration   2500
+    write /dev/voxpopuli/fling_boost_topapp         10
+    write /dev/voxpopuli/fling_min_freq_big         1113
+    write /dev/voxpopuli/fling_min_freq_little      1113
+    write /dev/voxpopuli/touch_boost_duration       200
+    write /dev/voxpopuli/touch_boost_topapp         5
+    write /dev/voxpopuli/touch_min_freq_big         1036
+    write /dev/voxpopuli/touch_min_freq_little      1036
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
+	
    #Create PERFD deamon related dirs
    mkdir /data/misc/perfd 0755 root system
    chmod 2755 /data/misc/perfd
@@ -66,6 +101,36 @@ on property:sys.boot_completed=1
 
 # Balance (default profile)
 on property:persist.spectrum.profile=0
+    write /dev/voxpopuli/enable_interaction_boost   1
+    write /dev/voxpopuli/fling_min_boost_duration   100
+    write /dev/voxpopuli/fling_max_boost_duration   800
+    write /dev/voxpopuli/fling_boost_topapp         10
+    write /dev/voxpopuli/fling_min_freq_big         700
+    write /dev/voxpopuli/fling_min_freq_little      1400
+    write /dev/voxpopuli/touch_boost_duration       100
+    write /dev/voxpopuli/touch_boost_topapp         5
+    write /dev/voxpopuli/touch_min_freq_big         700
+    write /dev/voxpopuli/touch_min_freq_little      700
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
 
     # Set Balance power settings
      write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
@@ -170,9 +235,41 @@ on property:persist.spectrum.profile=0
 	
  	start perf-hal-1-0
     start thermal-engine
+	stop vendor.power-hal-1-0
+	start vendor.power-hal-1-0	
 
 # Performance (based on DrunkSauce Lite)
 on property:persist.spectrum.profile=1
+    write /dev/voxpopuli/enable_interaction_boost 1
+    write /dev/voxpopuli/fling_min_boost_duration   300
+    write /dev/voxpopuli/fling_max_boost_duration   2000
+    write /dev/voxpopuli/fling_boost_topapp         20
+    write /dev/voxpopuli/fling_min_freq_big         1300
+    write /dev/voxpopuli/fling_min_freq_little      1300
+    write /dev/voxpopuli/touch_boost_duration       200
+    write /dev/voxpopuli/touch_boost_topapp         15
+    write /dev/voxpopuli/touch_min_freq_big         1100
+    write /dev/voxpopuli/touch_min_freq_little      1100
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
 
      # Set high performance settings
 
@@ -272,9 +369,42 @@ on property:persist.spectrum.profile=1
     start perf-hal-1-0
     start thermal-engine
 
+	stop vendor.power-hal-1-0
+	start vendor.power-hal-1-0	
+
 # Battery
 on property:persist.spectrum.profile=2
-	 
+    write /dev/voxpopuli/enable_interaction_boost 0
+    write /dev/voxpopuli/fling_min_boost_duration   50
+    write /dev/voxpopuli/fling_max_boost_duration   500
+    write /dev/voxpopuli/fling_boost_topapp         10
+    write /dev/voxpopuli/fling_min_freq_big         700
+    write /dev/voxpopuli/fling_min_freq_little      800
+    write /dev/voxpopuli/touch_boost_duration       50
+    write /dev/voxpopuli/touch_boost_topapp         5
+    write /dev/voxpopuli/touch_min_freq_big         500
+    write /dev/voxpopuli/touch_min_freq_little      500
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
+	
     write /sys/module/cpu_boost/parameters/input_boost_freq 0:307200
     write /sys/module/cpu_boost/parameters/input_boost_freq 1:0
     write /sys/module/cpu_boost/parameters/input_boost_freq 2:307200
@@ -375,11 +505,43 @@ on property:persist.spectrum.profile=2
     start perf-hal-1-0
     start thermal-engine
     trigger enable-low-power
+	stop vendor.power-hal-1-0
+	start vendor.power-hal-1-0
 	
 # Gaming
 on property:persist.spectrum.profile=3
     # Add configs here
      # Set high performance settings
+    write /dev/voxpopuli/enable_interaction_boost 1
+    write /dev/voxpopuli/fling_min_boost_duration   300
+    write /dev/voxpopuli/fling_max_boost_duration   1500
+    write /dev/voxpopuli/fling_boost_topapp         30
+    write /dev/voxpopuli/fling_min_freq_big         1400
+    write /dev/voxpopuli/fling_min_freq_little      1000
+    write /dev/voxpopuli/touch_boost_duration       200
+    write /dev/voxpopuli/touch_boost_topapp         20
+    write /dev/voxpopuli/touch_min_freq_big         1000
+    write /dev/voxpopuli/touch_min_freq_little      1000
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
 	 
     write /sys/class/devfreq/soc:qcom,cpubw/governor "bw_hwmon"
     write /sys/class/kgsl/kgsl-3d0/devfreq/governor "msm-adreno-tz"
@@ -479,7 +641,39 @@ on property:persist.spectrum.profile=3
 
 # Gaming
 on property:persist.spectrum.profile=4
+    write /dev/voxpopuli/enable_interaction_boost 1
+    write /dev/voxpopuli/fling_min_boost_duration   300
+    write /dev/voxpopuli/fling_max_boost_duration   1000
+    write /dev/voxpopuli/fling_boost_topapp         10
+    write /dev/voxpopuli/fling_min_freq_big         1400
+    write /dev/voxpopuli/fling_min_freq_little      900
+    write /dev/voxpopuli/touch_boost_duration       200
+    write /dev/voxpopuli/touch_boost_topapp         10
+    write /dev/voxpopuli/touch_min_freq_big         800
+    write /dev/voxpopuli/touch_min_freq_little      800
+    chmod 0644 /dev/voxpopuli/enable_interaction_boost
+    chmod 0644 /dev/voxpopuli/fling_min_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_max_boost_duration
+    chmod 0644 /dev/voxpopuli/fling_boost_topapp      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_big      
+    chmod 0644 /dev/voxpopuli/fling_min_freq_little   
+    chmod 0644 /dev/voxpopuli/touch_boost_duration    
+    chmod 0644 /dev/voxpopuli/touch_boost_topapp      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_big      
+    chmod 0644 /dev/voxpopuli/touch_min_freq_little   
+    chown system system /dev/voxpopuli/enable_interaction_boost
+    chown system system /dev/voxpopuli/fling_min_boost_duration
+    chown system system /dev/voxpopuli/fling_max_boost_duration
+    chown system system /dev/voxpopuli/fling_boost_topapp      
+    chown system system /dev/voxpopuli/fling_min_freq_big      
+    chown system system /dev/voxpopuli/fling_min_freq_little   
+    chown system system /dev/voxpopuli/touch_boost_duration    
+    chown system system /dev/voxpopuli/touch_boost_topapp      
+    chown system system /dev/voxpopuli/touch_min_freq_big      
+    chown system system /dev/voxpopuli/touch_min_freq_little
    	start qcom-post-boot
+	stop vendor.power-hal-1-0
+	start vendor.power-hal-1-0
 
     # Set idle GPU to 133 MHz
     write /sys/class/kgsl/kgsl-3d0/default_pwrlevel 6
@@ -502,6 +696,7 @@ on property:thermal.profile=9
     setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-game.conf"
     stop thermal-engine
     start thermal-engine
+	
 
 #Performance
 on property:thermal.profile=10
@@ -526,4 +721,5 @@ on property:thermal.profile=11
     setprop sys.qcom.thermalcfg "/vendor/etc/thermal-engine-default.conf"
     stop thermal-engine
     start thermal-engine
+
 
