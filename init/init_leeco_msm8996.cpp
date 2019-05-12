@@ -1,7 +1,7 @@
 /*
    Copyright (C) 2007, The Android Open Source Project
    Copyright (c) 2016, The CyanogenMod Project
-   Copyright (c) 2017, The LineageOS Project
+   Copyright (c) 2017-2019, The LineageOS Project
 
    Redistribution and use in source and binary forms, with or without
    modification, are permitted provided that the following conditions are
@@ -30,8 +30,6 @@
  */
 
 #include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -49,7 +47,6 @@
 
 #define DEVINFO_FILE "/dev/block/sde21"
 
-using android::base::Trim;
 using android::base::GetProperty;
 using android::base::ReadFileToString;
 using android::init::property_set;
@@ -92,6 +89,7 @@ void init_target_properties()
             property_set("persist.data.iwlan.enable", "false");
             // Dual SIM
             property_set("persist.radio.multisim.config", "dsds");
+            property_set("ro.telephony.default_network", "10,10");
             // Power profile
             property_set("ro.power_profile.override", "power_profile_zl0");
             unknownDevice = 0;
@@ -104,6 +102,7 @@ void init_target_properties()
             property_set("persist.data.iwlan.enable", "true");
             // Single SIM
             property_set("persist.radio.multisim.config", "NA");
+            property_set("ro.telephony.default_network", "10");
             // NFC
             property_set("persist.nfc.smartcard.config", "SIM1,eSE1");
             unknownDevice = 0;
@@ -115,35 +114,39 @@ void init_target_properties()
             property_set("persist.data.iwlan.enable", "false");
             // Dual SIM
             property_set("persist.radio.multisim.config", "dsds");
+            property_set("ro.telephony.default_network", "10,10");
             // NFC
             property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
             unknownDevice = 0;
         }
         else if (!strncmp(device.c_str(), "le_x2_na_oversea", 16)) {
             // This is LEX829
+            property_override_dual("ro.product.device", "ro.vendor.product.device", "le_x2");
             property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX829");
+            property_override_dual("ro.product.name", "ro.vendor.product.name", "LeMax2_WW");
             // Dual SIM
             property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
+            property_set("ro.telephony.default_network", "10,10");
             unknownDevice = 0;
         }
         else if (!strncmp(device.c_str(), "le_x2_india", 11)) {
             // This is LEX821
+            property_override_dual("ro.product.device", "ro.vendor.product.device", "le_x2");
             property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX821");
+            property_override_dual("ro.product.name", "ro.vendor.product.name", "LeMax2_WW");
             // Dual SIM
             property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
+            property_set("ro.telephony.default_network", "10,10");
             unknownDevice = 0;
         }
         else if (!strncmp(device.c_str(), "le_x2", 5)) {
             // This is LEX820
+            property_override_dual("ro.product.device", "ro.vendor.product.device", "le_x2");
             property_override_dual("ro.product.model", "ro.vendor.product.model", "LEX820");
+            property_override_dual("ro.product.name", "ro.vendor.product.name", "LeMax2_WW");
             // Dual SIM
             property_set("persist.radio.multisim.config", "dsds");
-            // NFC
-            property_set("persist.nfc.smartcard.config", "SIM1,SIM2,eSE1");
+            property_set("ro.telephony.default_network", "10,10");
             unknownDevice = 0;
         }
     }
@@ -155,70 +158,6 @@ void init_target_properties()
         property_override("ro.product.model", "UNKNOWN");
     }
 }
-
-/*
-void init_alarm_boot_properties()
-{
-    char const *boot_reason_file = "/proc/sys/kernel/boot_reason";
-    std::string boot_reason;
-
-    if (ReadFileToString(boot_reason_file, &boot_reason)) {
-        /*
-         * Setup ro.alarm_boot value to true when it is RTC triggered boot up
-         * For existing PMIC chips, the following mapping applies
-         * for the value of boot_reason:
-         *
-         * 0 -> unknown
-         * 1 -> hard reset
-         * 2 -> sudden momentary power loss (SMPL)
-         * 3 -> real time clock (RTC)
-         * 4 -> DC charger inserted
-         * 5 -> USB charger insertd
-         * 6 -> PON1 pin toggled (for secondary PMICs)
-         * 7 -> CBLPWR_N pin toggled (for external power supply)
-         * 8 -> KPDPWR_N pin toggled (power key pressed)
-         
-        if (Trim(boot_reason) == "0") {
-            property_set("ro.boot.bootreason", "invalid");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "1") {
-            property_set("ro.boot.bootreason", "hard_reset");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "2") {
-            property_set("ro.boot.bootreason", "smpl");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "3") {
-            property_set("ro.alarm_boot", "true");
-        }
-        else if (Trim(boot_reason) == "4") {
-            property_set("ro.boot.bootreason", "dc_chg");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "5") {
-            property_set("ro.boot.bootreason", "usb_chg");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "6") {
-            property_set("ro.boot.bootreason", "pon1");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "7") {
-            property_set("ro.boot.bootreason", "cblpwr");
-            property_set("ro.alarm_boot", "false");
-        }
-        else if (Trim(boot_reason) == "8") {
-            property_set("ro.boot.bootreason", "kpdpwr");
-            property_set("ro.alarm_boot", "false");
-        }
-    }
-    else {
-        LOG(ERROR) << "Unable to read bootreason from " << boot_reason_file;
-    }
-}
-*/
 
 void vendor_load_properties() {
     LOG(INFO) << "Loading vendor specific properties";

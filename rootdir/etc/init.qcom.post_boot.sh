@@ -3546,7 +3546,7 @@ case "$target" in
         echo $bcl_soc_hotplug_mask > /sys/devices/soc/soc:qcom,bcl/hotplug_soc_mask
         echo -n enable > /sys/devices/soc/soc:qcom,bcl/mode
         # input boost configuration
-        echo "0:1324800 2:1324800" > /sys/module/cpu_boost/parameters/input_boost_freq
+        echo "0:1036800 2:1036800" > /sys/module/cpu_boost/parameters/input_boost_freq
         echo 40 > /sys/module/cpu_boost/parameters/input_boost_ms
         # Setting b.L scheduler parameters
         echo 0 > /proc/sys/kernel/sched_boost

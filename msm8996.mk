@@ -317,6 +317,10 @@ PRODUCT_PACKAGES += \
     libandroid_net \
     netutils-wrapper-1.0
 
+# LiveDisplay
+PRODUCT_PACKAGES += \
+    vendor.lineage.livedisplay@2.0-service-sdm
+
 # OMX
 PRODUCT_PACKAGES += \
     libc2dcolorconvert \
