@@ -64,17 +64,6 @@ void power_init()
     }
 }
 
-// Supported EAS Governors
-const char * eas_governors[] = {
-    SCHEDUTIL_GOVERNOR,
-    SCHED_GOVERNOR,
-    PWRUTIL_GOVERNOR,
-    ALUCARDSCHED_GOVERNOR,
-    INTERACTIVE_GOVERNOR,
-    DARKNESSSCHED_GOVERNOR,
-    NULL
-};
-
 //interaction boost global variables
 static pthread_mutex_t s_interaction_lock = PTHREAD_MUTEX_INITIALIZER;
 static struct timespec s_previous_boost_timespec;
@@ -91,14 +80,6 @@ int boost_duration;
 int touch_boost_topapp;
 int touch_min_freq_big;
 int touch_min_freq_little;
-
-int is_eas_governor(const char *governor) {
-    for(int index = 0; eas_governors[index] != NULL; index++) {
-        if ((strncmp(governor, eas_governors[index], strlen(eas_governors[index])) == 0) && (strlen(governor) == strlen(eas_governors[index])))
-            return 1;
-    }
-    return 0;
-}
 
 int __attribute__ ((weak)) power_hint_override(power_hint_t hint,
         void *data)

@@ -73,8 +73,6 @@ enum CPU_GOV_CHECK {
     CPU3 = 3
 };
 
-const char * eas_governors[];
-int is_eas_governor(const char *governor);
 void get_int(const char* file_path, int* value, int fallback_value);
 void get_hex(const char* file_path, int* value, int fallback_value);
 void power_init(void);
