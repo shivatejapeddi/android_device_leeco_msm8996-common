@@ -17,6 +17,8 @@
 #
 
 set -e
+DEVICE_COMMON=msm8996-common
+VENDOR=leeco
 
 INITIAL_COPYRIGHT_YEAR=2016
 
@@ -27,7 +29,7 @@ if [[ ! -d "${MY_DIR}" ]]; then MY_DIR="${PWD}"; fi
 LINEAGE_ROOT="${MY_DIR}/../../.."
 CLEANUP="$1"
 
-HELPER="${LINEAGE_ROOT}/vendor/lineage/build/tools/extract_utils.sh"
+HELPER="${LINEAGE_ROOT}/vendor/aosp/build/tools/extract_utils.sh"
 if [ ! -f "${HELPER}" ]; then
     echo "Unable to find helper script at ${HELPER}"
     exit 1

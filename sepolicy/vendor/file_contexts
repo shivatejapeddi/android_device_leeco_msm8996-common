@@ -11,7 +11,6 @@
 # HALs
 /(vendor|system/vendor)/bin/hw/android\.hardware\.drm@1\.1-service\.clearkey     u:object_r:hal_drm_clearkey_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.drm@1\.1-service\.widevine     u:object_r:hal_drm_widevine_exec:s0
-/(vendor|system/vendor)/bin/hw/vendor\.lineage\.touch@1\.0-service\.leeco_8996   u:object_r:hal_lineage_touch_default_exec:s0
 
 # keylayout
 /vendor/usr/keylayout(/.*)?                                              u:object_r:vendor_keylayout_file:s0
@@ -39,4 +38,3 @@
 
 /sys/class/leds/torch-light[0-9](/.*)?                                   u:object_r:sysfs_torch:s0
 /sys/devices/soc/soc:qcom,camera-flash/flashled[0-9](/.*)?               u:object_r:sysfs_torch:s0
-/sys/remote/enable                                                       u:object_r:sysfs_ir_enable:s0
