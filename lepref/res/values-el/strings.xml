@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lepref_title">Ρυθμίσεις LeEco</string>
+    <string name="battery_settings_title">Μπαταρία</string>
+    <string name="qc_title">Γρήγορη φόρτιση</string>
+    <string name="qc_summary">Ενεργοποίηση/απενεργοποίηση της γρήγορης φόρτισης</string>
+</resources>

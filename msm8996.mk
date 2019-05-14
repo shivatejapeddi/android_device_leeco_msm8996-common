@@ -143,10 +143,6 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
     libcnefeatureconfig
 
-# Device settings
-PRODUCT_PACKAGES += \
-    DeviceSettings
-
 # Consumer IR
 PRODUCT_PACKAGES += \
     android.hardware.ir@1.0-service.leeco_8996 \
@@ -299,6 +295,10 @@ PRODUCT_PACKAGES += \
     libOmxVdec \
     libOmxVenc \
     libstagefrighthw
+
+# LePref settigs modules
+PRODUCT_PACKAGES += \
+    LePref
 
 # Power
 PRODUCT_PACKAGES += \
