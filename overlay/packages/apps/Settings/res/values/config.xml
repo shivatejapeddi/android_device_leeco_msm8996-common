@@ -24,4 +24,11 @@
        3 = right side
   -->
   <integer name="config_fingerprintSensorLocation">0</integer>
+
+    <!-- ManualSubProvisioning -->
+    <bool name="config_enableManualSubProvisioning">true</bool>
+
+    <!-- Whether to add AGPS parameter settings -->
+    <bool name="config_agps_enabled">true</bool>
+
 </resources>
